@@ -7,7 +7,7 @@ export default function Note({ note, index }) {
       {note.image && <img src={note.content} alt="Note" />}
       {note.file && (
         <a href={note.content} target="_blank" rel="noopener noreferrer">
-          {note.file}
+          {note.file}}
         </a>
       )}
     </li>

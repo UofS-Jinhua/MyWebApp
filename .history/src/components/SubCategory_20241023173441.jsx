@@ -7,7 +7,16 @@ export default function SubCategory() {
   // 假设我们有一个笔记数据结构
   const notes = {
     "Job Related": {
-      Veeva: [{ text: "Note 1" }, { image: "Note 2" }, { file: "Note 3" }],
+      Veeva: ["Note 1", "Note 2"],
+      Projects: ["Note 3", "Note 4"],
+    },
+    "Coding Related": {
+      Carrot: ["Note 5", "Note 6"],
+      Daikon: ["Note 7", "Note 8"],
+    },
+    Others: {
+      Apple: ["Note 9", "Note 10"],
+      Banana: ["Note 11", "Note 12"],
     },
   };
 
@@ -20,7 +29,7 @@ export default function SubCategory() {
       </h2>
       <ul>
         {subCategoryNotes.map((note, index) => (
-          <Note note={note} index={index} />
+          <Note note=note,index={index}>
         ))}
       </ul>
     </div>

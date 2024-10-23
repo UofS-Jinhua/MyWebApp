@@ -7,7 +7,7 @@ export default function SubCategory() {
   // 假设我们有一个笔记数据结构
   const notes = {
     "Job Related": {
-      Veeva: [{ text: "Note 1" }, { image: "Note 2" }, { file: "Note 3" }],
+      Veeva: [{ Text: "Note 1" }, { Image: "Note 2" }],
     },
   };
 
