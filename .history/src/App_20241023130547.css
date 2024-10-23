@@ -1,0 +1,44 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.categories-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.category {
+  margin: 10px;
+  padding: 60px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 30%;
+  box-sizing: border-box;
+}
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  white-space: nowrap; /* 防止换行 */
+}
+
+.add-button {
+  /* background-color: #4caf50; */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  font-size: 20px;
+  line-height: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.add-button:hover {
+  background-color: #45a049;
+}
