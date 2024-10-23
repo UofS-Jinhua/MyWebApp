@@ -21,7 +21,7 @@ export default function Category({ c_name, contents }) {
       </div>
       <ul>
         {cur_contents.map((content, index) => (
-          <li key={index}>
+          <li>
             {" "}
             <Link to={`/${c_name}/${content}`}>{content}</Link>
           </li>

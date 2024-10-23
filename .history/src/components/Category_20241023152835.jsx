@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 
 export default function Category({ c_name, contents }) {
   const [cur_contents, set_cur_contents] = useState(contents);
@@ -21,10 +20,7 @@ export default function Category({ c_name, contents }) {
       </div>
       <ul>
         {cur_contents.map((content, index) => (
-          <li key={index}>
-            {" "}
-            <Link to={`/${c_name}/${content}`}>{content}</Link>
-          </li>
+          <Link to={`/${c_name}/${content}`}>{content}</Link>
         ))}
       </ul>
     </div>
