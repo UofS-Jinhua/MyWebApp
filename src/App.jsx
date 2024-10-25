@@ -5,22 +5,29 @@ import Category from "./components/Category";
 import SubCategory from "./components/SubCategory";
 
 function App() {
+  const categories = {
+    "Job Related": ["Veeva", "Projects"],
+    "Coding Related": ["Carrot", "Daikon"],
+    Others: ["Apple", "Banana"],
+  };
+
   return (
     <Router>
-      <div className="categories-container">
-        <Category
-          c_name="Job Related"
-          contents={["Veeva", "TikTalk", "Amazon"]}
-        />
-        <Category
-          c_name="Coding Related"
-          contents={["Carrot", "Daikon", "Eggplant"]}
-        />
-
-        <Category c_name="Others" contents={["Apple", "Banana", "Cherry"]} />
-      </div>
-
       <Routes>
+        <Route
+          path="/"
+          element={
+            <div className="categories-container">
+              {Object.keys(categories).map((category) => (
+                <Category
+                  key={category}
+                  c_name={category}
+                  contents={categories[category]}
+                />
+              ))}
+            </div>
+          }
+        />
         <Route path="/:category/:subCategory" element={<SubCategory />} />
       </Routes>
     </Router>
