@@ -1,15 +1,100 @@
-import { useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useParams,
+  Link,
+} from "react-router-dom";
+
+// import css styles
 import "./App.css";
+
+// import components
 import Category from "./components/Category";
 import SubCategory from "./components/SubCategory";
+import SubsubCategory from "./components/SubsubCategory";
+import Breadcrumbs from "./components/Breadcrumbs";
+
+// import pages
+import CategoryPage from "./pages/CategoryPage";
+import SubCategoryPage from "./pages/SubCategoryPage";
 
 function App() {
-  const categories = {
-    "Job Related": ["Veeva", "Projects"],
-    "Coding Related": ["Carrot", "Daikon"],
-    Others: ["Apple", "Banana"],
+  // data structure
+  // List of categories,
+  // each category has its name and an ID
+
+  const [mycategories, setCategories] = useState([]);
+
+  // data structure
+  // List of subcategories,
+  // each subcategory has its name, ID and the ID of the category it belongs to
+  const [mysubcategories, setsubCategories] = useState([]);
+
+  // helper function to find subcategories of a category
+  const findSubCategories = (categoryId) => {
+    const result = mysubcategories.filter(
+      (subcategory) => subcategory.category_id === categoryId
+    );
+    // console.log("Categories:", mycategories);
+    // console.log("Subcategories:", mysubcategories);
+    // console.log(`Subcategories for category ID ${categoryId}:`, result);
+    return result;
   };
+
+  function handleAddCategory() {
+    const newCategoryName = prompt("New Category Name：");
+    if (newCategoryName && newCategoryName.trim() !== "") {
+      const newCategory = {
+        name: newCategoryName.trim(),
+      };
+      axios
+        .post("http://localhost:3000/categories", newCategory)
+        .then((response) => {
+          // when sucessfully added a new category, update the categories list
+          axios
+            .get("http://localhost:3000/categories")
+            .then((res) => {
+              setCategories(res.data);
+            })
+            .catch((err) => console.error(err));
+        })
+        .catch((error) => {
+          console.error("Get Error when Post: ", error);
+        });
+    }
+  }
+
+  function SubsubCategoryPage() {
+    const { category, subCategory, subsubCategory } = useParams();
+    return (
+      <div>
+        <Breadcrumbs />
+        <h2>
+          {subsubCategory} in {subCategory} in {category}
+        </h2>
+        {/* 这里可以添加更多内容 */}
+      </div>
+    );
+  }
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/categories")
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((error) => console.log(error));
+
+    axios
+      .get("http://localhost:3000/subcategories")
+      .then((response) => {
+        setsubCategories(response.data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   return (
     <Router>
@@ -17,18 +102,35 @@ function App() {
         <Route
           path="/"
           element={
-            <div className="categories-container">
-              {Object.keys(categories).map((category) => (
-                <Category
-                  key={category}
-                  c_name={category}
-                  contents={categories[category]}
-                />
-              ))}
+            <div>
+              <div className="categories-directory">
+                <Breadcrumbs />
+                <button
+                  className="add-category-button"
+                  onClick={handleAddCategory}
+                >
+                  New Category
+                </button>
+              </div>
+              <div className="categories-container">
+                {mycategories.map((category) => (
+                  <Category
+                    key={category.name + category.id}
+                    c_id={category.id}
+                    c_name={category.name}
+                    contents={findSubCategories(category.id)}
+                  />
+                ))}
+              </div>
             </div>
           }
         />
-        <Route path="/:category/:subCategory" element={<SubCategory />} />
+        <Route path="/:category" element={<CategoryPage />} />
+        <Route path="/:category/:subCategory" element={<SubCategoryPage />} />
+        <Route
+          path="/:category/:subCategory/:subsubCategory"
+          element={<SubsubCategory />}
+        />
       </Routes>
     </Router>
   );

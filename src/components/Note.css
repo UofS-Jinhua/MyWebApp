@@ -1,0 +1,63 @@
+.note-container {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.note-container h3 {
+  margin-top: 0;
+  font-size: 1.5em;
+  color: #333;
+}
+
+.note-container a {
+  color: #4caf50;
+  text-decoration: none;
+}
+
+.note-container a:hover {
+  text-decoration: underline;
+}
+
+/*  */
+
+.ImgBox {
+  text-align: center;
+}
+
+.grid-view {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.grid-image {
+  width: 100%;
+  cursor: pointer;
+}
+
+.expanded-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.zoomed-image {
+  width: 80%;
+  margin-bottom: 20px;
+}
+
+.row-view {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.thumbnail {
+  height: 10%;
+  width: 10%;
+  cursor: pointer;
+  object-fit: cover;
+}

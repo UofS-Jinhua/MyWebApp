@@ -1,0 +1,63 @@
+.subcategory-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.home-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.home-button:hover {
+  background-color: #45a049;
+}
+
+.subcategory-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.notes-container {
+  margin-bottom: 20px;
+}
+
+.note-item {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.new-note-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.new-note-textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.save-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.save-button:hover {
+  background-color: #45a049;
+}

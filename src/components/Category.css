@@ -1,0 +1,68 @@
+.category {
+  margin: 10px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px; /* 设置圆角 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.category-header h3 {
+  color: #333;
+}
+
+/* Add Button Style------------------------ */
+.add-button {
+  /* background-color: #4caf50; */
+  color: white;
+  border: none;
+  /* border-radius: 50%; */
+  margin-left: 12%;
+  width: 3%;
+  height: 2%;
+  font-size: 20px;
+  line-height: 0px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.add-button:hover {
+  background-color: gray;
+}
+
+/* Category List Style -------------------- */
+.category ul {
+  list-style-type: none;
+  padding-left: 10%;
+  margin: 5%;
+  text-align: left;
+}
+
+.category li {
+  margin-bottom: 10px;
+}
+
+.category a {
+  text-decoration: none;
+  color: #333;
+}
+
+.category a:hover {
+  text-decoration: underline;
+}
+
+.more-subcategories {
+  display: inline-block;
+  margin-top: 10px;
+  color: #999;
+}

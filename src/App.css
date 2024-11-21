@@ -1,45 +1,48 @@
+html,
+body,
 #root {
-  max-width: 1280px;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  max-width: 100%;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  background-image: url("./images/花铭_汉服_24.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  overflow: auto;
 }
 
 .categories-container {
-  display: flex;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+  gap: 2%;
+  margin: 2%;
+  margin-top: 2%;
+  padding: 2%;
 }
 
-.category {
-  margin: 10px;
-  padding: 60px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 30%;
-  box-sizing: border-box;
+.categories-directory {
+  text-align: left;
+  margin-top: 2%;
+  margin-left: 5%;
+  padding-top: 2%;
+  font-size: 24px;
+  font-weight: bold;
 }
 
-.category-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  white-space: nowrap; /* 防止换行 */
-}
-
-.add-button {
-  /* background-color: #4caf50; */
-  color: white;
-  border: none;
-  /* border-radius: 50%; */
-  margin-left: 10px;
-  width: 25px;
-  height: 25px;
-  font-size: 20px;
-  line-height: 0px;
-  text-align: center;
+.add-category-button {
+  /* position: absolute; */
+  top: 6%;
+  right: 20%;
+  font-size: 16px;
+  padding: auto;
   cursor: pointer;
-}
-
-.add-button:hover {
-  background-color: gray;
 }
