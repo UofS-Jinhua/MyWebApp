@@ -1,9 +1,11 @@
 .note-container {
-  background-color: #f9f9f9;
+  background-color: rgba(255, 255, 255, 0.8);
   padding: 15px;
   border: 1px solid #ddd;
   border-radius: 5px;
   margin-bottom: 10px;
+  color: #333;
+  text-align: left;
 }
 
 .note-container h3 {

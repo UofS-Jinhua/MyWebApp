@@ -20,6 +20,7 @@ import Breadcrumbs from "./components/Breadcrumbs";
 // import pages
 import CategoryPage from "./pages/CategoryPage";
 import SubCategoryPage from "./pages/SubCategoryPage";
+import SubSubCategoryPage from "./pages/SubSubCategoryPage";
 
 function App() {
   // data structure
@@ -129,7 +130,7 @@ function App() {
         <Route path="/:category/:subCategory" element={<SubCategoryPage />} />
         <Route
           path="/:category/:subCategory/:subsubCategory"
-          element={<SubsubCategory />}
+          element={<SubSubCategoryPage />}
         />
       </Routes>
     </Router>

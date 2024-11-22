@@ -14,11 +14,18 @@ export default function Note({ note, index }) {
 
   return (
     <div className="note-container">
-      {note.tittle && <h3>{note.tittle}</h3>}
-      <hr />
+      {note.title && (
+        <h3>
+          {note.title} <hr />
+        </h3>
+      )}
 
-      {note.text && <p>{note.text}</p>}
-      {note.image && (
+      {note.content && (
+        <p>
+          {note.content} <hr />
+        </p>
+      )}
+      {note.images && (
         <div className="ImgBox">
           {clickedImage ? (
             <div className="expanded-view">
@@ -29,7 +36,7 @@ export default function Note({ note, index }) {
                 onClick={handleBackToGrid}
               />
               <div className="row-view">
-                {note.image.map((image, index) => (
+                {note.images.map((image, index) => (
                   <img
                     key={index}
                     src={image}
@@ -43,7 +50,7 @@ export default function Note({ note, index }) {
             </div>
           ) : (
             <div className="grid-view">
-              {note.image.map((image, index) => (
+              {note.images.map((image, index) => (
                 <img
                   key={index}
                   src={image}
@@ -56,14 +63,29 @@ export default function Note({ note, index }) {
           )}
         </div>
       )}
-      {note.file && (
-        <div>
-          <br />
-          <br />
+      {note.files && (
+        // <div>
+        //   <br />
+        //   <br />
 
-          <a href={note.file} target="_blank" rel="noopener noreferrer">
-            {note.file}
-          </a>
+        //   <a href={note.files} target="_blank" rel="noopener noreferrer">
+        //     {note.files}
+        //   </a>
+        // </div>
+        <div className="note-files">
+          {note.files.map((file, index) => {
+            const fileURL = URL.createObjectURL(file);
+            return (
+              <a
+                key={index}
+                href={fileURL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {file.name}
+              </a>
+            );
+          })}
         </div>
       )}
     </div>

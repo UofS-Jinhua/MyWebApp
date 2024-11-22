@@ -1,6 +1,6 @@
 .category-page-container {
   margin: 5%;
-  padding: 5%;
+  padding: 0%;
   border: 1px solid #ccc;
   border-radius: 5px;
   width: 90%;
@@ -16,4 +16,17 @@
   margin: 5%;
   text-align: left;
   font-size: 20px;
+}
+
+.category-page-container li {
+  margin-bottom: 10px;
+}
+
+.category-page-container a {
+  text-decoration: none;
+  color: #333;
+}
+
+.category-page-container a:hover {
+  text-decoration: underline;
 }
