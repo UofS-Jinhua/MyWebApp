@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 
 // import components
-import Breadcrumbs from "../components/Breadcrumbs";
+import Navbar from "../components/Navbar";
 
 // import css styles
 import "../App.css";
@@ -69,8 +69,9 @@ export default function CategoryPage() {
   // main body of the component -------------------------------------------------
   return (
     <div>
+      <Navbar />
       <div className="categories-directory">
-        <Breadcrumbs />
+        {/* <Breadcrumbs /> */}
         <button className="add-category-button" onClick={addContent}>
           New SubCategory
         </button>

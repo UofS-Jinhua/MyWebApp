@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams, useLocation, Link } from "react-router-dom";
 
 // import components
+import Navbar from "../components/Navbar";
 import Breadcrumbs from "../components/Breadcrumbs";
 
 export default function SubCategoryPage() {
@@ -31,8 +32,9 @@ export default function SubCategoryPage() {
     if (new_content !== null && new_content.trim() !== "") {
       // create a new SubCategory object
       const newSubSubCategory = {
-        id: subCategoryId,
-        name: new_content.trim(),
+        category_id: categoryId,
+        subcategory_id: subCategoryId,
+        subsub_name: new_content.trim(),
       };
 
       console.log(newSubSubCategory);
@@ -58,10 +60,11 @@ export default function SubCategoryPage() {
   // main body of the component -------------------------------------------------
   return (
     <div>
+      <Navbar />
       <div className="categories-directory">
-        <Breadcrumbs />
+        {/* <Breadcrumbs /> */}
         <button className="add-category-button" onClick={addContent}>
-          New SubSubCategory
+          New Content
         </button>
       </div>
 

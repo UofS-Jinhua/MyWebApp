@@ -1,6 +1,7 @@
 .note-container {
   background-color: rgba(255, 255, 255, 0.8);
   padding: 15px;
+  padding-bottom: 0px;
   border: 1px solid #ddd;
   border-radius: 5px;
   margin-bottom: 10px;
@@ -31,12 +32,14 @@
 
 .grid-view {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 10px;
 }
 
 .grid-image {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
   cursor: pointer;
 }
 
@@ -60,6 +63,161 @@
 .thumbnail {
   height: 10%;
   width: 10%;
-  cursor: pointer;
   object-fit: cover;
+  cursor: pointer;
+}
+
+/* Footer */
+.note-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  border-top: 1px dashed #ccc;
+  /* padding-bottom: 0px;
+  margin-bottom: 0px; */
+}
+
+.note-breadcrumbs {
+  color: black;
+  padding-top: 1%;
+  font-size: 12px;
+  flex: 1;
+}
+
+.note-creation-time {
+  flex: 1;
+  text-align: right;
+}
+
+/* -------------------------------------------------------------------------- */
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 10%;
+}
+
+.note-header h3 {
+  padding-top: 2%;
+}
+
+.modify-button {
+  padding: 5px 10px;
+  border: none;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.modify-button:hover {
+  background-color: gray;
+}
+
+/* Modifying box ----------------------------------------------------------- */
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding-top: 1%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 2%;
+  border-radius: 5px;
+  width: 60%;
+  max-height: 100%;
+  overflow-y: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.modal-content-title {
+  margin-bottom: 10px;
+  width: 100%;
+  height: 100%;
+  font-size: 20px;
+  text-align: left;
+}
+.modal-content-title-input {
+  width: 50%;
+  padding: 10px;
+  margin-left: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  color: black;
+  font-size: 20px;
+}
+
+.modal-content textarea {
+  margin-top: 2%;
+  width: 89%;
+}
+
+/* buttons setting -------------------------------------------- */
+.button-container {
+  width: 100%;
+  padding-top: 2%;
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* 按钮之间的间距 */
+}
+
+.update-button,
+.cancel-button,
+.delete-button,
+.back-button {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.update-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.update-button:hover {
+  background-color: #218838;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
+
+.back-button {
+  background-color: #6c757d;
+  color: white;
+}
+
+.back-button:hover {
+  background-color: #5a6268;
+}
+
+.cancel-button {
+  background-color: #6c757d;
+  color: white;
+}
+
+.cancel-button:hover {
+  background-color: #5a6268;
 }

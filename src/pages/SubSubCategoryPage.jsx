@@ -2,11 +2,15 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, useLocation, Link } from "react-router-dom";
 
+// import components
+import Navbar from "../components/Navbar";
 import Breadcrumbs from "../components/Breadcrumbs";
 import Note from "../components/Note";
+
+// import css styles
 import "./SubSubCategoryPage.css";
 
-export default function SubCategory() {
+export default function SubSubCategoryPage() {
   const { category, subCategory, subsubCategory } = useParams();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -23,7 +27,9 @@ export default function SubCategory() {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
+      reader.onload = () => {
+        resolve({ base64: reader.result, filename: file.name });
+      };
       reader.onerror = (error) => reject(error);
     });
   };
@@ -56,7 +62,8 @@ export default function SubCategory() {
 
     var new_title = prompt("Enter Note Title:");
     if (new_title.trim() === "") {
-      new_title = null;
+      alert("Please enter note title.");
+      return;
     }
 
     const noteData = {
@@ -65,6 +72,8 @@ export default function SubCategory() {
       images: imagesBase64,
       files: filesBase64,
       subsubcategory_id: subsubCategoryId,
+      subcategory_id: subCategoryId,
+      category_id: categoryId,
     };
 
     console.log(noteData);
@@ -78,9 +87,10 @@ export default function SubCategory() {
           .then((res) => {
             const notesWithFiles = res.data.map((note) => ({
               ...note,
-              files: note.files.map((base64, index) =>
-                convertBase64ToFile(base64, `file_${index}`)
-              ),
+              files: note.files.map((file) => {
+                const { base64, filename } = file;
+                return convertBase64ToFile(base64, filename);
+              }),
             }));
             setMyNotes(notesWithFiles);
             setNewNote("");
@@ -100,12 +110,15 @@ export default function SubCategory() {
       axios
         .get(`http://localhost:3000/notes/${subsubCategoryId}`)
         .then((res) => {
+          // console.log(res.data);
           const notesWithFiles = res.data.map((note) => ({
             ...note,
-            files: note.files.map((base64, index) =>
-              convertBase64ToFile(base64, `file_${index}`)
-            ),
+            files: note.files.map((file) => {
+              const { base64, filename } = file;
+              return convertBase64ToFile(base64, filename);
+            }),
           }));
+          // console.log(notesWithFiles);
           setMyNotes(notesWithFiles);
         })
         .catch((err) => console.error(err));
@@ -114,9 +127,8 @@ export default function SubCategory() {
 
   return (
     <div>
-      <div className="categories-directory">
-        <Breadcrumbs />
-      </div>
+      <Navbar />
+      <div className="categories-directory">{/* <Breadcrumbs /> */}</div>
 
       <div className="subsubcategory-page-container">
         {myNotes.map((note) => (

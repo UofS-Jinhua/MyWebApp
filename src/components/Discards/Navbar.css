@@ -1,0 +1,88 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: black;
+  border-bottom: 1px solid #dee2e6;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.navbar-left {
+  flex: 1;
+  display: flex;
+  padding-top: 1%;
+  padding-left: 5%;
+  white-space: nowrap;
+}
+
+.navbar-right {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+  padding-right: 5%;
+}
+
+.file-system,
+.login-info {
+  margin-left: 20px;
+}
+
+.file-system ul,
+.login-info ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.file-system li,
+.login-info li {
+  margin-bottom: 5px;
+}
+
+.notes-dropdown {
+  position: absolute;
+  background-color: black;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.category-item,
+.subcategory-item,
+.subsubcategory-item {
+  white-space: nowrap; /* 确保内容在一行显示 */
+}
+
+.subcategory-dropdown,
+.subsubcategory-dropdown {
+  position: absolute;
+  right: 100%; /* 确保子菜单显示在父菜单的左侧 */
+  top: 0;
+  background-color: black;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.subcategory,
+.subsubcategory {
+  margin-left: 10px;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+a:hover {
+  color: white;
+  text-decoration: underline;
+}

@@ -12,15 +12,15 @@ import {
 import "./App.css";
 
 // import components
+import Navbar from "./components/Navbar";
 import Category from "./components/Category";
-import SubCategory from "./components/SubCategory";
-import SubsubCategory from "./components/SubsubCategory";
-import Breadcrumbs from "./components/Breadcrumbs";
 
 // import pages
 import CategoryPage from "./pages/CategoryPage";
 import SubCategoryPage from "./pages/SubCategoryPage";
 import SubSubCategoryPage from "./pages/SubSubCategoryPage";
+
+import AllnotePage from "./pages/AllnotePage";
 
 function App() {
   // data structure
@@ -68,19 +68,6 @@ function App() {
     }
   }
 
-  function SubsubCategoryPage() {
-    const { category, subCategory, subsubCategory } = useParams();
-    return (
-      <div>
-        <Breadcrumbs />
-        <h2>
-          {subsubCategory} in {subCategory} in {category}
-        </h2>
-        {/* 这里可以添加更多内容 */}
-      </div>
-    );
-  }
-
   useEffect(() => {
     axios
       .get("http://localhost:3000/categories")
@@ -104,8 +91,10 @@ function App() {
           path="/"
           element={
             <div>
+              <Navbar />
+
               <div className="categories-directory">
-                <Breadcrumbs />
+                {/* <Breadcrumbs /> */}
                 <button
                   className="add-category-button"
                   onClick={handleAddCategory}
@@ -132,6 +121,7 @@ function App() {
           path="/:category/:subCategory/:subsubCategory"
           element={<SubSubCategoryPage />}
         />
+        <Route path="/all-notes" element={<AllnotePage />} />
       </Routes>
     </Router>
   );

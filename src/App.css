@@ -5,12 +5,13 @@ body,
   width: 100%;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 #root {
   max-width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
   text-align: center;
   background-image: url("./images/花铭_汉服_24.png");
   background-size: cover;
@@ -31,7 +32,7 @@ body,
 
 .categories-directory {
   text-align: left;
-  margin-top: 2%;
+  margin-top: 4%;
   margin-left: 5%;
   padding-top: 2%;
   font-size: 24px;
