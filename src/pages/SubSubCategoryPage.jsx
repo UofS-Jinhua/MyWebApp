@@ -18,7 +18,7 @@ export default function SubSubCategoryPage() {
   const subCategoryId = queryParams.get("sub_id");
   const subsubCategoryId = queryParams.get("subsub_id");
   const [myNotes, setMyNotes] = useState([]);
-  const [newNote, setNewNote] = useState([]);
+  const [newNote, setNewNote] = useState("");
   const [newImages, setNewImages] = useState([]);
   const [newFiles, setNewFiles] = useState([]);
 
@@ -46,6 +46,29 @@ export default function SubSubCategoryPage() {
     return new File([ab], filename, { type: mimeType });
   };
 
+  const splitFileName = (filename) => {
+    const index = filename.lastIndexOf(".");
+    const extension = filename.slice(index);
+    const name = filename.slice(0, index);
+
+    if (name.length > 10) {
+      return (
+        name.slice(0, 10) + "..." + name.slice(index - 5, index) + extension
+      );
+    }
+    return filename;
+  };
+
+  const handleDeleteImage = (index) => {
+    const new_Images = newImages.filter((_, i) => i !== index);
+    setNewImages(new_Images);
+  };
+
+  const handleDeleteFile = (index) => {
+    const new_Files = newFiles.filter((_, i) => i !== index);
+    setNewFiles(new_Files);
+  };
+
   // add a new Note to the subsubCategory
   async function handleSaveNote() {
     if (
@@ -61,7 +84,7 @@ export default function SubSubCategoryPage() {
     const filesBase64 = await Promise.all(newFiles.map(convertFileToBase64));
 
     var new_title = prompt("Enter Note Title:");
-    if (new_title.trim() === "") {
+    if (new_title.trim() === "" || new_title === null) {
       alert("Please enter note title.");
       return;
     }
@@ -159,12 +182,24 @@ export default function SubSubCategoryPage() {
             {newImages.length > 0 && (
               <div className="file-preview">
                 {newImages.map((image, index) => (
-                  <img
-                    key={index}
-                    src={URL.createObjectURL(image)}
-                    alt="Preview"
-                    className="file-preview-image"
-                  />
+                  <div key={index} className="file-preview-item">
+                    <img
+                      key={index}
+                      src={URL.createObjectURL(image)}
+                      alt="Preview"
+                      className="file-preview-image"
+                    />
+                    <span className="file-preview-name">
+                      {splitFileName(image.name)}
+                    </span>
+
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDeleteImage(index)}
+                    >
+                      X
+                    </button>
+                  </div>
                 ))}
               </div>
             )}
@@ -181,7 +216,23 @@ export default function SubSubCategoryPage() {
               <div className="file-preview">
                 <ul>
                   {newFiles.map((file, index) => (
-                    <li key={index}>{file.name}</li>
+                    <li key={index}>
+                      <a
+                        key={index}
+                        href={URL.createObjectURL(file)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {" "}
+                        {splitFileName(file.name)}{" "}
+                      </a>
+                      <button
+                        className="delete-button"
+                        onClick={() => handleDeleteFile(index)}
+                      >
+                        X
+                      </button>
+                    </li>
                   ))}
                 </ul>
               </div>

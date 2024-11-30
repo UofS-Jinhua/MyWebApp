@@ -21,15 +21,23 @@ export default function Note({ note, parentInfo }) {
     setShowModal(true);
   };
 
-  const handleSaveNote = () => {
+  const handleSaveNote = async () => {
+    const base64Files = await Promise.all(
+      updatedNote.files.map((file) => convertFileToBase64(file))
+    );
+    const updatedNoteWithBase64Files = {
+      ...updatedNote,
+      files: base64Files,
+    };
     axios
-      .put(`http://localhost:3000/notes/${note.id}`, updatedNote)
+      .put(`http://localhost:3000/notes/${note.id}`, updatedNoteWithBase64Files)
       .then((response) => {
         console.log("Note updated:", response.data);
         setShowModal(false);
-        // 更新笔记数据
         note.title = updatedNote.title;
         note.content = updatedNote.content;
+        note.images = updatedNote.images;
+        note.files = updatedNote.files;
       })
       .catch((error) => {
         console.error("Error updating note:", error);
@@ -48,7 +56,7 @@ export default function Note({ note, parentInfo }) {
         console.error("Error deleting note:", error);
       });
   };
-
+  // Encode file to base64
   const convertFileToBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -57,6 +65,53 @@ export default function Note({ note, parentInfo }) {
         resolve({ base64: reader.result, filename: file.name });
       };
       reader.onerror = (error) => reject(error);
+    });
+  };
+
+  const splitFileName = (filename) => {
+    const index = filename.lastIndexOf(".");
+    const extension = filename.slice(index);
+    const name = filename.slice(0, index);
+
+    if (name.length > 10) {
+      return (
+        name.slice(0, 10) + "..." + name.slice(index - 5, index) + extension
+      );
+    }
+    return filename;
+  };
+
+  const handleImageChange = async (e) => {
+    const files = Array.from(e.target.files);
+    const base64Images = await Promise.all(files.map(convertFileToBase64));
+    setUpdatedNote({
+      ...updatedNote,
+      images: [...updatedNote.images, ...base64Images],
+    });
+  };
+
+  const handleDeleteImage = (index) => {
+    const newImages = updatedNote.images.filter((_, i) => i !== index);
+    setUpdatedNote({
+      ...updatedNote,
+      images: newImages,
+    });
+  };
+
+  const handleFileChange = (e) => {
+    const newfiles = Array.from(e.target.files);
+
+    setUpdatedNote({
+      ...updatedNote,
+      files: [...updatedNote.files, ...newfiles],
+    });
+  };
+
+  const handleDeleteFile = (index) => {
+    const newFiles = updatedNote.files.filter((_, i) => i !== index);
+    setUpdatedNote({
+      ...updatedNote,
+      files: newFiles,
     });
   };
 
@@ -112,19 +167,24 @@ export default function Note({ note, parentInfo }) {
       {note.files && note.files.length > 0 && (
         <div className="note-files">
           <hr />
-          {note.files.map((file, index) => {
-            const fileURL = URL.createObjectURL(file);
-            return (
-              <a
-                key={index}
-                href={fileURL}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {file.name}
-              </a>
-            );
-          })}
+          <div className="file-grid">
+            {note.files.map((file, index) => {
+              const fileURL = URL.createObjectURL(file);
+              return (
+                <div key={index} className="file-item">
+                  <a
+                    key={index}
+                    href={fileURL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="file-link"
+                  >
+                    {splitFileName(file.name)}
+                  </a>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
 
@@ -141,7 +201,7 @@ export default function Note({ note, parentInfo }) {
       {showModal && (
         <div className="modal">
           <div className="modal-content">
-            {/* user input content: text ------------------------ */}
+            {/* user input Title and Content: text ------------------------ */}
             <label className="modal-content-title">
               Title:
               <input
@@ -163,51 +223,64 @@ export default function Note({ note, parentInfo }) {
             />
 
             <div className="file-input-container">
-              {/* upload images ---------------------------------- */}
+              {/* update images ---------------------------------- */}
               <div className="file-input-box">
                 <h2>Images</h2>
                 <input
                   type="file"
                   accept="image/*"
                   multiple
-                  onChange={(e) =>
-                    setUpdatedNote({
-                      ...updatedNote,
-                      images: Array.from(e.target.files),
-                    })
-                  }
+                  onChange={handleImageChange}
                 />
                 {updatedNote.images.length > 0 && (
                   <div className="file-preview">
                     {updatedNote.images.map((image, index) => (
-                      <img
-                        key={index}
-                        src={URL.createObjectURL(image.base64)}
-                        alt="Preview"
-                        className="file-preview-image"
-                      />
+                      <div key={index} className="file-preview-item">
+                        <img
+                          key={index}
+                          src={image.base64}
+                          alt="Preview"
+                          className="file-preview-image"
+                        />
+                        <span className="file-preview-name">
+                          {splitFileName(image.filename)}
+                        </span>
+                        <button
+                          className="delete-button"
+                          onClick={() => handleDeleteImage(index)}
+                        >
+                          X
+                        </button>
+                      </div>
                     ))}
                   </div>
                 )}
               </div>
-              {/* upload files ---------------------------------- */}
+              {/* update files ---------------------------------- */}
               <div className="file-input-box">
                 <h2>Files</h2>
-                <input
-                  type="file"
-                  multiple
-                  onChange={(e) =>
-                    setUpdatedNote({
-                      ...updatedNote,
-                      files: Array.from(e.target.files),
-                    })
-                  }
-                />
+                <input type="file" multiple onChange={handleFileChange} />
                 {updatedNote.files.length > 0 && (
                   <div className="file-preview">
                     <ul>
                       {updatedNote.files.map((file, index) => (
-                        <li key={index}>{file.name}</li>
+                        <li key={index}>
+                          <a
+                            key={index}
+                            href={URL.createObjectURL(file)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {" "}
+                            {splitFileName(file.name)}{" "}
+                          </a>
+                          <button
+                            className="delete-button"
+                            onClick={() => handleDeleteFile(index)}
+                          >
+                            X
+                          </button>
+                        </li>
                       ))}
                     </ul>
                   </div>
@@ -223,7 +296,10 @@ export default function Note({ note, parentInfo }) {
               </button>
               <button
                 className="back-button"
-                onClick={() => setShowModal(false)}
+                onClick={() => {
+                  setShowModal(false);
+                  setUpdatedNote(note);
+                }}
               >
                 Back
               </button>

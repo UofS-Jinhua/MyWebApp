@@ -37,7 +37,7 @@ export default function SubCategoryPage() {
         subsub_name: new_content.trim(),
       };
 
-      console.log(newSubSubCategory);
+      // console.log(newSubSubCategory);
 
       // send a POST request to the server
       axios

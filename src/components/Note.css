@@ -67,7 +67,27 @@
   cursor: pointer;
 }
 
-/* Footer */
+/* show Files ------------------------------------------------------------------ */
+
+.file-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+}
+
+.file-link {
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Footer ---------------------------------------------------------------------- */
 .note-footer {
   display: flex;
   justify-content: space-between;
@@ -220,4 +240,47 @@
 
 .cancel-button:hover {
   background-color: #5a6268;
+}
+
+/* File Preview  -------------------- */
+.file-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.file-preview li {
+  list-style: none;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.file-preview li a {
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-preview-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.file-preview-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+.file-preview-name {
+  flex: 1;
+  width: 80px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
