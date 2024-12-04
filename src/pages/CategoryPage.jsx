@@ -2,12 +2,14 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
-  Route,
-  Routes,
   useParams,
   useLocation,
   Link,
+  useNavigate,
 } from "react-router-dom";
+
+import { useCategory } from "../context/CategoryContext";
+import { useSubCategory } from "../context/SubCategoryContext";
 
 // import components
 import Navbar from "../components/Navbar";
@@ -21,50 +23,51 @@ export default function CategoryPage() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const categoryId = queryParams.get("id");
+  const navigate = useNavigate();
 
+  // global context
+  const { fetchCategories, deleteCategory } = useCategory();
+  const { fetchSubCategoriesByCategoryId, addSubCategory, deleteSubCategory } =
+    useSubCategory();
+
+  // local state
   const [subcategories, setSubcategories] = useState([]);
 
-  // console.log(category);
-  // console.log(categoryId);
-  // console.log(location);
-
-  function addContent() {
-    const new_content = prompt("Enter new SubCategory:");
-    if (new_content !== null && new_content.trim() !== "") {
-      // create a new SubCategory object
-      const newSubCategory = {
-        id: categoryId,
-        name: new_content.trim(),
-      };
-
-      console.log(newSubCategory);
-
-      // send a POST request to the server
-      axios
-        .post("http://localhost:3000/subcategories", newSubCategory)
-        .then((response) => {
-          // when successfully added a new SubCategory, update the contents list
-          axios
-            .get(`http://localhost:3000/subcategories/${categoryId}`)
-            .then((res) => {
-              setSubcategories(res.data);
-            })
-            .catch((err) => console.error(err));
-        })
-        .catch((error) => {
-          console.error("An error occured when adding new subcate: ", error);
-        });
+  async function addContent() {
+    try {
+      await addSubCategory(categoryId);
+      const newContents = await fetchSubCategoriesByCategoryId(categoryId);
+      setSubcategories(newContents);
+    } catch (error) {
+      console.error(
+        "Error adding subcategory and fetching subcategories: ",
+        error
+      );
     }
   }
 
+  function delCate() {
+    deleteCategory(categoryId);
+    navigate("/");
+  }
+
+  function delSubCate(subCategoryId) {
+    deleteSubCategory(subCategoryId);
+    const newContents = subcategories.filter(
+      (subcat) => subcat.id !== subCategoryId
+    );
+    setSubcategories(newContents);
+  }
+
   useEffect(() => {
-    axios
-      .get(`http://localhost:3000/subcategories/${categoryId}`)
-      .then((res) => {
-        setSubcategories(res.data);
-      })
-      .catch((err) => console.error(err));
-  });
+    const fetchData = async () => {
+      const currentSubcategories = await fetchSubCategoriesByCategoryId(
+        categoryId
+      );
+      setSubcategories(currentSubcategories);
+    };
+    fetchData();
+  }, [categoryId]);
 
   // main body of the component -------------------------------------------------
   return (
@@ -75,21 +78,28 @@ export default function CategoryPage() {
         <button className="add-category-button" onClick={addContent}>
           New SubCategory
         </button>
+        <button className="del-category-button" onClick={delCate}>
+          Delete
+        </button>
       </div>
 
-      <div className="category-page-container">
-        <ul>
-          {subcategories.map((subcat) => (
-            <li key={subcat.id}>
-              <Link
-                to={`/${category}/${subcat.name}?id=${categoryId}&sub_id=${subcat.id}`}
-              >
-                {subcat.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {subcategories.length > 0 && (
+        <div className="category-page-container">
+          <ul>
+            {subcategories.map((subcat) => (
+              <li key={subcat.id}>
+                <Link
+                  to={`/${category}/${subcat.name}?id=${categoryId}&sub_id=${subcat.id}`}
+                >
+                  {subcat.name}
+                </Link>
+
+                <button onClick={() => delSubCate(subcat.id)}>Delete</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

@@ -22,66 +22,23 @@ import SubSubCategoryPage from "./pages/SubSubCategoryPage";
 
 import AllnotePage from "./pages/AllnotePage";
 
-function App() {
-  // data structure
-  // List of categories,
-  // each category has its name and an ID
+// import providers
+import { CategoryProvider, useCategory } from "./context/CategoryContext";
+import {
+  SubCategoryProvider,
+  useSubCategory,
+} from "./context/SubCategoryContext";
 
-  const [mycategories, setCategories] = useState([]);
-
-  // data structure
-  // List of subcategories,
-  // each subcategory has its name, ID and the ID of the category it belongs to
-  const [mysubcategories, setsubCategories] = useState([]);
+function AppContent() {
+  // global state:
+  const { categories, addCategory, fetchCategories } = useCategory();
+  const { fetchSubCategories, findSubCategories_local } = useSubCategory();
 
   // helper function to find subcategories of a category
-  const findSubCategories = (categoryId) => {
-    const result = mysubcategories.filter(
-      (subcategory) => subcategory.category_id === categoryId
-    );
-    // console.log("Categories:", mycategories);
-    // console.log("Subcategories:", mysubcategories);
-    // console.log(`Subcategories for category ID ${categoryId}:`, result);
-    return result;
-  };
-
-  function handleAddCategory() {
-    const newCategoryName = prompt("New Category Name：");
-    if (newCategoryName && newCategoryName.trim() !== "") {
-      const newCategory = {
-        name: newCategoryName.trim(),
-      };
-      axios
-        .post("http://localhost:3000/categories", newCategory)
-        .then((response) => {
-          // when sucessfully added a new category, update the categories list
-          axios
-            .get("http://localhost:3000/categories")
-            .then((res) => {
-              setCategories(res.data);
-            })
-            .catch((err) => console.error(err));
-        })
-        .catch((error) => {
-          console.error("Get Error when Post: ", error);
-        });
-    }
-  }
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/categories")
-      .then((response) => {
-        setCategories(response.data);
-      })
-      .catch((error) => console.log(error));
-
-    axios
-      .get("http://localhost:3000/subcategories")
-      .then((response) => {
-        setsubCategories(response.data);
-      })
-      .catch((error) => console.log(error));
+    fetchCategories();
+    fetchSubCategories();
   }, []);
 
   return (
@@ -95,20 +52,17 @@ function App() {
 
               <div className="categories-directory">
                 {/* <Breadcrumbs /> */}
-                <button
-                  className="add-category-button"
-                  onClick={handleAddCategory}
-                >
+                <button className="add-category-button" onClick={addCategory}>
                   New Category
                 </button>
               </div>
               <div className="categories-container">
-                {mycategories.map((category) => (
+                {categories.map((category) => (
                   <Category
                     key={category.name + category.id}
                     c_id={category.id}
                     c_name={category.name}
-                    contents={findSubCategories(category.id)}
+                    contents={findSubCategories_local(category.id)}
                   />
                 ))}
               </div>
@@ -124,6 +78,15 @@ function App() {
         <Route path="/all-notes" element={<AllnotePage />} />
       </Routes>
     </Router>
+  );
+}
+function App() {
+  return (
+    <CategoryProvider>
+      <SubCategoryProvider>
+        <AppContent />
+      </SubCategoryProvider>
+    </CategoryProvider>
   );
 }
 

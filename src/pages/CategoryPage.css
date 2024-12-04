@@ -12,7 +12,7 @@
 
 .category-page-container ul {
   list-style-type: none;
-  padding-left: 10%;
+  padding-left: 5%;
   margin: 5%;
   text-align: left;
   font-size: 20px;
@@ -20,6 +20,22 @@
 
 .category-page-container li {
   margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc; /* 添加下划线 */
+  /* padding-bottom: 5px; /* 添加内边距以确保下划线与内容之间有间距 */
+}
+
+.category-page-container li button {
+  margin-left: 10px;
+  background-color: gray;
+  color: white;
+  border: none;
+  border-radius: 10%;
+  font-size: 11px;
+  cursor: pointer;
 }
 
 .category-page-container a {
@@ -29,4 +45,17 @@
 
 .category-page-container a:hover {
   text-decoration: underline;
+}
+
+.del-category-button {
+  top: 6%;
+  float: right;
+  font-size: 16px;
+  padding: auto;
+  cursor: pointer;
+  background-color: #ae0c01;
+}
+
+.del-category-button:hover {
+  background-color: #ff0000;
 }

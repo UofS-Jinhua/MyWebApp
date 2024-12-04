@@ -22,17 +22,24 @@
 }
 
 /* Add Button Style------------------------ */
-.add-button {
-  /* background-color: #4caf50; */
+.category-buttons {
+  /* width: 5%; */
+  margin-left: 1%;
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+}
+
+.add-button,
+.delete-button {
   color: white;
   border: none;
-  /* border-radius: 50%; */
-  margin-left: 12%;
+  border-radius: 10%;
   width: 3%;
-  height: 2%;
-  font-size: 20px;
+  /* height: 2%; */
+  font-size: 16px;
   line-height: 0px;
-  text-align: center;
+  /* text-align: center; */
   cursor: pointer;
 }
 
@@ -40,19 +47,42 @@
   background-color: gray;
 }
 
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
+
 /* Category List Style -------------------- */
 .category ul {
   list-style-type: none;
-  padding-left: 10%;
+  padding-left: 5%;
   margin: 5%;
   text-align: left;
+  width: 85%;
+  font-size: 14px;
 }
 
 .category li {
-  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.category li button {
+  background-color: gray;
+}
+
+.category li button:hover {
+  background-color: #333;
 }
 
 .category a {
+  flex: 1;
   text-decoration: none;
   color: #333;
 }
@@ -65,4 +95,66 @@
   display: inline-block;
   margin-top: 10px;
   color: #999;
+}
+
+/* showmodal ---------------------------- */
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 30%;
+  text-align: center;
+  color: black;
+}
+
+.modal-content h3 {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.modal-buttons {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap: 10px; /* 按钮之间的间距 */
+}
+
+.confirm-button,
+.cancel-button {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.confirm-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.confirm-button:hover {
+  background-color: #218838;
+}
+
+.cancel-button {
+  background-color: #6c757d;
+  color: white;
+}
+
+.cancel-button:hover {
+  background-color: #5a6268;
 }

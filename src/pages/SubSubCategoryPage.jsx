@@ -151,7 +151,6 @@ export default function SubSubCategoryPage() {
   return (
     <div>
       <Navbar />
-      <div className="categories-directory">{/* <Breadcrumbs /> */}</div>
 
       <div className="subsubcategory-page-container">
         {myNotes.map((note) => (
