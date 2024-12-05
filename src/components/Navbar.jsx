@@ -47,12 +47,6 @@ export default function Navbar() {
                 <li>
                   <Link to="/">All Categories</Link>
                 </li>
-                {/* <li>
-                  <Link to="/all-subcategories">All SubCategories</Link>
-                </li>
-                <li>
-                  <Link to="/all-subsubcategories">All SubSubCategories</Link>
-                </li> */}
                 <li>
                   <Link to="/all-notes">All Notes</Link>
                 </li>
@@ -61,9 +55,9 @@ export default function Navbar() {
           )}
         </div>
 
-        <div className="login-info">
+        {/* <div className="login-info">
           <h3>Devices</h3>
-        </div>
+        </div> */}
       </div>
     </div>
   );

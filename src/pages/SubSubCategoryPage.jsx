@@ -1,26 +1,28 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams, useLocation, Link } from "react-router-dom";
+import { useParams, useLocation, Link, useNavigate } from "react-router-dom";
 
 // import components
 import Navbar from "../components/Navbar";
-import Breadcrumbs from "../components/Breadcrumbs";
 import Note from "../components/Note";
 
 // import css styles
 import "./SubSubCategoryPage.css";
 
 export default function SubSubCategoryPage() {
-  const { category, subCategory, subsubCategory } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
+  const { category, subCategory, subsubCategory } = useParams();
   const categoryId = queryParams.get("id");
   const subCategoryId = queryParams.get("sub_id");
   const subsubCategoryId = queryParams.get("subsub_id");
   const [myNotes, setMyNotes] = useState([]);
+  const [newTitle, setNewTitle] = useState("");
   const [newNote, setNewNote] = useState("");
   const [newImages, setNewImages] = useState([]);
   const [newFiles, setNewFiles] = useState([]);
+  const [showNewNote, setShowNewNote] = useState(false);
 
   // Encode file to base64
   const convertFileToBase64 = (file) => {
@@ -71,7 +73,10 @@ export default function SubSubCategoryPage() {
 
   // add a new Note to the subsubCategory
   async function handleSaveNote() {
-    if (
+    if (newTitle.trim() === "") {
+      alert("Please enter note title.");
+      return;
+    } else if (
       newNote.trim() === "" &&
       newImages.length === 0 &&
       newFiles.length === 0
@@ -83,14 +88,8 @@ export default function SubSubCategoryPage() {
     const imagesBase64 = await Promise.all(newImages.map(convertFileToBase64));
     const filesBase64 = await Promise.all(newFiles.map(convertFileToBase64));
 
-    var new_title = prompt("Enter Note Title:");
-    if (new_title.trim() === "" || new_title === null) {
-      alert("Please enter note title.");
-      return;
-    }
-
     const noteData = {
-      title: new_title,
+      title: newTitle,
       content: newNote,
       images: imagesBase64,
       files: filesBase64,
@@ -98,8 +97,6 @@ export default function SubSubCategoryPage() {
       subcategory_id: subCategoryId,
       category_id: categoryId,
     };
-
-    console.log(noteData);
 
     axios
       .post("http://localhost:3000/notes", noteData)
@@ -125,7 +122,25 @@ export default function SubSubCategoryPage() {
       .catch((error) => {
         console.error("Got error when post note to server：", error);
       });
+
+    setShowNewNote(false);
   }
+
+  const deleteSelf = (subsubCategoryId) => {
+    axios
+      .delete(`http://localhost:3000/subsubcategories/${subsubCategoryId}`)
+      .then((res) => {
+        navigate(
+          `/${category}/${subCategory}?id=${categoryId}&sub_id=${subCategoryId}`
+        );
+        window.location.reload();
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const handleNewNoteClick = () => {
+    setShowNewNote(true);
+  };
 
   // fetch notes from the server
   useEffect(() => {
@@ -151,97 +166,126 @@ export default function SubSubCategoryPage() {
   return (
     <div>
       <Navbar />
-
+      <div className="categories-directory">
+        <button className="add-category-button" onClick={handleNewNoteClick}>
+          New Note
+        </button>
+        <button
+          className="del-category-button"
+          onClick={() => deleteSelf(subsubCategoryId)}
+        >
+          Delete
+        </button>
+      </div>
       <div className="subsubcategory-page-container">
         {myNotes.map((note) => (
           <Note key={note.id} note={note} />
         ))}
       </div>
 
-      <div className="new-note-container">
-        {/* user input content: text ------------------------ */}
-        <textarea
-          className="new-note-textarea"
-          value={newNote}
-          onChange={(e) => setNewNote(e.target.value)}
-          placeholder="Contents of the new note..."
-          rows="5"
-        />
+      {showNewNote && (
+        <div className="new-note-container">
+          {/* user input content: title ------------------------ */}
+          <input
+            type="text"
+            className="new-note-title-input"
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
+            placeholder="Title of the new note..."
+          />
 
-        <div className="file-input-container">
-          {/* upload images ---------------------------------- */}
-          <div className="file-input-box">
-            <h2>Upload Images</h2>
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={(e) => setNewImages(Array.from(e.target.files))}
-            />
-            {newImages.length > 0 && (
-              <div className="file-preview">
-                {newImages.map((image, index) => (
-                  <div key={index} className="file-preview-item">
-                    <img
-                      key={index}
-                      src={URL.createObjectURL(image)}
-                      alt="Preview"
-                      className="file-preview-image"
-                    />
-                    <span className="file-preview-name">
-                      {splitFileName(image.name)}
-                    </span>
+          {/* user input content: text ------------------------ */}
+          <textarea
+            className="new-note-textarea"
+            value={newNote}
+            onChange={(e) => setNewNote(e.target.value)}
+            placeholder="Contents of the new note..."
+            rows="5"
+          />
 
-                    <button
-                      className="delete-button"
-                      onClick={() => handleDeleteImage(index)}
-                    >
-                      X
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-          {/* upload files ---------------------------------- */}
-          <div className="file-input-box">
-            <h2>Upload Files</h2>
-            <input
-              type="file"
-              multiple
-              onChange={(e) => setNewFiles(Array.from(e.target.files))}
-            />
-            {newFiles.length > 0 && (
-              <div className="file-preview">
-                <ul>
-                  {newFiles.map((file, index) => (
-                    <li key={index}>
-                      <a
+          <div className="file-input-container">
+            {/* upload images ---------------------------------- */}
+            <div className="file-input-box">
+              <h2>Upload Images</h2>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(e) => setNewImages(Array.from(e.target.files))}
+              />
+              {newImages.length > 0 && (
+                <div className="file-preview">
+                  {newImages.map((image, index) => (
+                    <div key={index} className="file-preview-item">
+                      <img
                         key={index}
-                        href={URL.createObjectURL(file)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {" "}
-                        {splitFileName(file.name)}{" "}
-                      </a>
+                        src={URL.createObjectURL(image)}
+                        alt="Preview"
+                        className="file-preview-image"
+                      />
+                      <span className="file-preview-name">
+                        {splitFileName(image.name)}
+                      </span>
+
                       <button
-                        className="delete-button"
-                        onClick={() => handleDeleteFile(index)}
+                        className="delete-button-x"
+                        onClick={() => handleDeleteImage(index)}
                       >
                         X
                       </button>
-                    </li>
+                    </div>
                   ))}
-                </ul>
-              </div>
-            )}
+                </div>
+              )}
+            </div>
+            {/* upload files ---------------------------------- */}
+            <div className="file-input-box">
+              <h2>Upload Files</h2>
+              <input
+                type="file"
+                multiple
+                onChange={(e) => setNewFiles(Array.from(e.target.files))}
+              />
+              {newFiles.length > 0 && (
+                <div className="file-preview">
+                  <ul>
+                    {newFiles.map((file, index) => (
+                      <li key={index}>
+                        <a
+                          key={index}
+                          href={URL.createObjectURL(file)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {" "}
+                          {splitFileName(file.name)}{" "}
+                        </a>
+                        <button
+                          className="delete-button-x"
+                          onClick={() => handleDeleteFile(index)}
+                        >
+                          X
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="new-note-button-container">
+            <button className="save-button" onClick={handleSaveNote}>
+              Upload
+            </button>
+            <button
+              className="hide-button"
+              onClick={() => setShowNewNote(false)}
+            >
+              Hide
+            </button>
           </div>
         </div>
-        <button className="save-button" onClick={handleSaveNote}>
-          Upload
-        </button>
-      </div>
+      )}
     </div>
   );
 }

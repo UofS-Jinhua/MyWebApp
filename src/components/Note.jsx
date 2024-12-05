@@ -124,7 +124,7 @@ export default function Note({ note, parentInfo }) {
           Modify
         </button>
       </div>
-      {note.content && <p>{note.content}</p>}
+      {note.content && <p className="note-content">{note.content}</p>}
       {note.images && note.images.length > 0 && (
         <div className="ImgBox">
           <hr />
@@ -246,7 +246,7 @@ export default function Note({ note, parentInfo }) {
                           {splitFileName(image.filename)}
                         </span>
                         <button
-                          className="delete-button"
+                          className="delete-button-x"
                           onClick={() => handleDeleteImage(index)}
                         >
                           X
@@ -275,7 +275,7 @@ export default function Note({ note, parentInfo }) {
                             {splitFileName(file.name)}{" "}
                           </a>
                           <button
-                            className="delete-button"
+                            className="delete-button-x"
                             onClick={() => handleDeleteFile(index)}
                           >
                             X

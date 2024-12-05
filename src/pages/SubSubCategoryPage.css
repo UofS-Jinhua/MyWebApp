@@ -47,9 +47,22 @@
   align-items: center;
 }
 
+/* title input box----------------------------------- */
+.new-note-title-input {
+  width: 87.5%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px; /* 设置圆角 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
 /* content input box------------------------- */
 .new-note-textarea {
-  width: 90%;
+  width: 87.5%;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -63,14 +76,15 @@
 /* uploading container 1 x 2 box----------------------- */
 .file-input-container {
   display: flex;
-  width: 92%;
+  width: 90%;
   justify-content: space-between;
   margin-bottom: 10px;
+  flex-wrap: wrap;
 }
 
 .file-input-box {
-  flex: 1;
-  margin: 0 10px;
+  flex: 1 1 calc(50% - 20px); /* 每个文件输入框占据50%的宽度，减去间距 */
+  margin: 0;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
@@ -110,8 +124,18 @@
   margin-bottom: 10px;
 }
 
-.save-button {
-  background-color: #4caf50;
+/* button container */
+
+.new-note-button-container {
+  display: flex;
+  justify-content: center;
+
+  width: 90%;
+  gap: 10px;
+}
+
+.save-button,
+.hide-button {
   color: white;
   border: none;
   padding: 10px 20px;
@@ -119,6 +143,18 @@
   cursor: pointer;
 }
 
+.save-button {
+  background-color: #4caf50;
+}
+
+.hide-button {
+  background-color: gray;
+}
+
 .save-button:hover {
   background-color: #45a049;
+}
+
+.hide-button:hover {
+  background-color: #a0a0a0;
 }

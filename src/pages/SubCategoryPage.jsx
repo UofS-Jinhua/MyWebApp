@@ -1,17 +1,23 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams, useLocation, Link } from "react-router-dom";
+import { useParams, useLocation, Link, useNavigate } from "react-router-dom";
 
 // import components
 import Navbar from "../components/Navbar";
-import Breadcrumbs from "../components/Breadcrumbs";
+import { useSubCategory } from "../context/SubCategoryContext";
 
 export default function SubCategoryPage() {
-  const { category, subCategory } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
+
+  const { category, subCategory } = useParams();
   const categoryId = queryParams.get("id");
   const subCategoryId = queryParams.get("sub_id");
+
+  // global context
+  const { deleteSubCategory } = useSubCategory();
+  // local state to store subsubcategories
   const [subsubcategories, setSubsubcategories] = useState([]);
 
   // fetch subsubcategories from the server
@@ -36,9 +42,6 @@ export default function SubCategoryPage() {
         subcategory_id: subCategoryId,
         subsub_name: new_content.trim(),
       };
-
-      // console.log(newSubSubCategory);
-
       // send a POST request to the server
       axios
         .post("http://localhost:3000/subsubcategories", newSubSubCategory)
@@ -57,6 +60,24 @@ export default function SubCategoryPage() {
     }
   }
 
+  function delSubCate(subCateId) {
+    deleteSubCategory(subCateId);
+    navigate(`/${category}?id=${categoryId}`);
+    window.location.reload();
+  }
+
+  function deleteSubSubCategory(subsubId) {
+    axios
+      .delete(`http://localhost:3000/subsubcategories/${subsubId}`)
+      .then((res) => {
+        const newSubSubCategories = subsubcategories.filter(
+          (subsubcat) => subsubcat.id !== subsubId
+        );
+        setSubsubcategories(newSubSubCategories);
+      })
+      .catch((err) => console.error(err));
+  }
+
   // main body of the component -------------------------------------------------
   return (
     <div>
@@ -66,21 +87,34 @@ export default function SubCategoryPage() {
         <button className="add-category-button" onClick={addContent}>
           New Content
         </button>
+        <button
+          className="del-category-button"
+          onClick={() => delSubCate(subCategoryId)}
+        >
+          Delete
+        </button>
       </div>
 
-      <div className="category-page-container">
-        <ul>
-          {subsubcategories.map((subsubcat) => (
-            <li key={subsubcat.id}>
-              <Link
-                to={`/${category}/${subCategory}/${subsubcat.name}?id=${categoryId}&sub_id=${subCategoryId}&subsub_id=${subsubcat.id}`}
-              >
-                {subsubcat.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {subsubcategories.length > 0 && (
+        <div className="category-page-container">
+          <ul>
+            {subsubcategories.map((subsubcat) => (
+              <li key={subsubcat.id}>
+                <Link
+                  to={`/${category}/${subCategory}/${subsubcat.name}?id=${categoryId}&sub_id=${subCategoryId}&subsub_id=${subsubcat.id}`}
+                >
+                  {subsubcat.name}
+                </Link>
+
+                <button onClick={() => deleteSubSubCategory(subsubcat.id)}>
+                  {" "}
+                  Delete{" "}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

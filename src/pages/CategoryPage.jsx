@@ -33,6 +33,13 @@ export default function CategoryPage() {
   // local state
   const [subcategories, setSubcategories] = useState([]);
 
+  async function fetchData() {
+    const currentSubcategories = await fetchSubCategoriesByCategoryId(
+      categoryId
+    );
+    setSubcategories(currentSubcategories);
+  }
+
   async function addContent() {
     try {
       await addSubCategory(categoryId);
@@ -60,21 +67,24 @@ export default function CategoryPage() {
   }
 
   useEffect(() => {
-    const fetchData = async () => {
-      const currentSubcategories = await fetchSubCategoriesByCategoryId(
-        categoryId
-      );
-      setSubcategories(currentSubcategories);
-    };
     fetchData();
   }, [categoryId]);
+
+  // useEffect(() => {
+  //   if (location.state && location.state.deleted) {
+  //     const deletedSubCategoryId = parseInt(location.state.subc_id);
+  //     const newContents = subcategories.filter(
+  //       (subcat) => subcat.id !== deletedSubCategoryId
+  //     );
+  //     setSubcategories(newContents);
+  //   }
+  // }, [location.state, categoryId]);
 
   // main body of the component -------------------------------------------------
   return (
     <div>
       <Navbar />
       <div className="categories-directory">
-        {/* <Breadcrumbs /> */}
         <button className="add-category-button" onClick={addContent}>
           New SubCategory
         </button>

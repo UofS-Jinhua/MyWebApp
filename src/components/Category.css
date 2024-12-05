@@ -71,6 +71,8 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 5px;
+  border-bottom: 1px solid #ccc; /* 添加下划线 */
+  padding-bottom: 1px; /* 添加内边距以确保下划线与内容之间有间距 */
 }
 
 .category li button {

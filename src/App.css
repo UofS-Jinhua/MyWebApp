@@ -26,16 +26,12 @@ body,
   grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
   gap: 2%;
   margin: 2%;
-  margin-top: 2%;
-  padding: 2%;
+  padding-left: 2%;
 }
 
 .categories-directory {
   text-align: left;
-  margin-top: 4%;
-  margin-left: 5%;
-  padding-top: 2%;
-  font-size: 24px;
+  margin: 2% 5% 0% 5%;
   font-weight: bold;
   width: 90%;
 }

@@ -24,7 +24,11 @@
   text-decoration: underline;
 }
 
-/*  */
+.note-content {
+  white-space: pre-wrap;
+}
+
+/* Images style ---------------------------------- -------- */
 
 .ImgBox {
   text-align: center;
@@ -199,11 +203,19 @@
 .update-button,
 .cancel-button,
 .delete-button,
+.delete-button-x,
 .back-button {
   padding: 10px 20px;
   border: none;
   cursor: pointer;
   border-radius: 5px;
+  font-size: 12px;
+}
+
+.update-button,
+.back-button,
+.delete-button {
+  flex: 1;
 }
 
 .update-button {
@@ -215,12 +227,14 @@
   background-color: #218838;
 }
 
-.delete-button {
+.delete-button,
+.delete-button-x {
   background-color: #dc3545;
   color: white;
 }
 
-.delete-button:hover {
+.delete-button:hover,
+.delete-button-x:hover {
   background-color: #c82333;
 }
 
@@ -243,17 +257,28 @@
 }
 
 /* File Preview  -------------------- */
+.file-input-container {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
 .file-preview {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
+.file-preview ul {
+  padding: 0;
+}
+
 .file-preview li {
   list-style: none;
   border: 1px solid #ccc;
   border-radius: 5px;
-  padding: 10px;
+  /* padding: 10px; */
   display: flex;
   justify-content: space-between;
 }
