@@ -19,6 +19,8 @@ import Category from "./components/Category";
 import CategoryPage from "./pages/CategoryPage";
 import SubCategoryPage from "./pages/SubCategoryPage";
 import SubSubCategoryPage from "./pages/SubSubCategoryPage";
+import NotePage from "./pages/NotePage";
+import SelectNote from "./pages/SelectNote";
 
 import AllnotePage from "./pages/AllnotePage";
 
@@ -75,7 +77,12 @@ function AppContent() {
           path="/:category/:subCategory/:subsubCategory"
           element={<SubSubCategoryPage />}
         />
+        <Route
+          path="/:category/:subCategory/:subsubCategory/:note"
+          element={<NotePage />}
+        />
         <Route path="/all-notes" element={<AllnotePage />} />
+        <Route path="/search" element={<SelectNote />}></Route>
       </Routes>
     </Router>
   );

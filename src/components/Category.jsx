@@ -63,7 +63,7 @@ export default function Category({ c_id, c_name, contents }) {
           <button className="add-button" onClick={addContent}>
             +
           </button>
-          <button className="delete-button" onClick={delContent}>
+          <button className="delete-button-cate" onClick={delContent}>
             -
           </button>
         </div>
@@ -78,7 +78,7 @@ export default function Category({ c_id, c_name, contents }) {
             </Link>
 
             <button
-              className="delete-button"
+              className="delete-button-cate"
               onClick={() => delSub(content.id)}
             >
               -

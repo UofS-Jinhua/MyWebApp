@@ -178,9 +178,23 @@ export default function SubSubCategoryPage() {
         </button>
       </div>
       <div className="subsubcategory-page-container">
-        {myNotes.map((note) => (
-          <Note key={note.id} note={note} />
-        ))}
+        {myNotes.map((note) => {
+          // console.log(note.images);
+          return (
+            <Note
+              key={note.id}
+              note={note}
+              parentInfo={{
+                category: category,
+                subCategory: subCategory,
+                subsubCategory: subsubCategory,
+                categoryId: categoryId,
+                subCategoryId: subCategoryId,
+                subsubCategoryId: subsubCategoryId,
+              }}
+            />
+          );
+        })}
       </div>
 
       {showNewNote && (

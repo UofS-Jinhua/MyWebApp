@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+
 import Breadcrumbs from "./Breadcrumbs";
 
 import "./Note.css";
@@ -29,10 +31,12 @@ export default function Note({ note, parentInfo }) {
       ...updatedNote,
       files: base64Files,
     };
+
+    // console.log("Updated Note with base64 files:", updatedNoteWithBase64Files);
     axios
       .put(`http://localhost:3000/notes/${note.id}`, updatedNoteWithBase64Files)
       .then((response) => {
-        console.log("Note updated:", response.data);
+        // console.log("Note updated:", response.data);
         setShowModal(false);
         note.title = updatedNote.title;
         note.content = updatedNote.content;
@@ -48,7 +52,7 @@ export default function Note({ note, parentInfo }) {
     axios
       .delete(`http://localhost:3000/notes/${note.id}`)
       .then((response) => {
-        console.log("Note deleted:", response.data);
+        // console.log("Note deleted:", response.data);
         setShowModal(false);
         window.location.reload();
       })
@@ -118,7 +122,15 @@ export default function Note({ note, parentInfo }) {
   return (
     <div className="note-container">
       <div className="note-header">
-        {note.title && <h3>{note.title}</h3>}
+        {note.title && (
+          <h3>
+            <Link
+              to={`/${parentInfo.category}/${parentInfo.subCategory}/${parentInfo.subsubCategory}/${note.title}?id=${parentInfo.categoryId}&sub_id=${parentInfo.subCategoryId}&subsub_id=${parentInfo.subsubCategoryId}&note_id=${note.id}`}
+            >
+              {note.title}
+            </Link>
+          </h3>
+        )}
 
         <button className="modify-button" onClick={handleModifyClick}>
           Modify

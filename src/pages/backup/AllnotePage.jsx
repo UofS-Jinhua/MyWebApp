@@ -4,7 +4,7 @@ import { useParams, useLocation, Link } from "react-router-dom";
 
 // import components
 import Navbar from "../components/Navbar";
-import SimpleNote from "../components/SimpleNote";
+import Note from "../components/Note";
 
 // import css styles
 import "./SubSubCategoryPage.css";
@@ -15,7 +15,33 @@ export default function AllnotePage() {
   const [subsubCategories, setSubSubCategories] = useState([]);
   const [notes, setNotes] = useState([]);
 
+  // Encode file to base64
+  const convertFileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        resolve({ base64: reader.result, filename: file.name });
+      };
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  //   // Decode base64 to file
+  const convertBase64ToFile = (base64, filename) => {
+    const mimeType = base64.match(/data:(.*?);base64,/)[1];
+    const byteString = atob(base64.split(",")[1]);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    return new File([ab], filename, { type: mimeType });
+  };
+
   const getParentInfo = (note) => {
+    // console.log(note);
+
     const subsubCategory = subsubCategories.find(
       (subsubCategory) => subsubCategory.id === note.subsubcategory_id
     );
@@ -26,6 +52,9 @@ export default function AllnotePage() {
       (category) => category.id === note.category_id
     );
 
+    // console.log("category = ", category);
+    // console.log("subCategory = ", subCategory);
+    // console.log("subsubCategory = ", subsubCategory);
     const result = {
       category: category.name,
       subCategory: subCategory.name,
@@ -34,15 +63,23 @@ export default function AllnotePage() {
       subCategoryId: note.subcategory_id,
       subsubCategoryId: note.subsubcategory_id,
     };
+    // console.log("result = ", result);
     return result;
   };
 
   // fetch notes from the server
   useEffect(() => {
     axios
-      .get("http://localhost:3000/notes_without_contents")
+      .get("http://localhost:3000/notes")
       .then((response) => {
-        setNotes(response.data);
+        const decodedNotes = response.data.map((note) => {
+          const decodedFiles = note.files.map((file) => {
+            const { base64, filename } = file;
+            return convertBase64ToFile(base64, filename);
+          });
+          return { ...note, files: decodedFiles };
+        });
+        setNotes(decodedNotes);
       })
       .catch((error) => console.log(error));
 
@@ -74,11 +111,7 @@ export default function AllnotePage() {
 
       <div className="subsubcategory-page-container">
         {notes.map((note) => (
-          <SimpleNote
-            key={note.id}
-            noteInfo={note}
-            parentInfo={getParentInfo(note)}
-          />
+          <Note key={note.id} note={note} parentInfo={getParentInfo(note)} />
         ))}
       </div>
     </div>

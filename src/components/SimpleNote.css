@@ -1,0 +1,49 @@
+.note {
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+}
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.note-header h3 {
+  margin: 0;
+}
+
+.note-info {
+  display: flex;
+  gap: 10px;
+}
+
+.note-info span {
+  padding: 5px 10px;
+  border: 1px dashed;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.note-info-text {
+  border-color: blue;
+  color: blue;
+}
+
+.note-info-files {
+  border-color: green;
+  color: green;
+}
+
+.note-info-images {
+  border-color: red;
+  color: red;
+}
+
+.note-content {
+  margin-top: 10px;
+  white-space: pre-wrap; /* 保留文本中的换行符和空白字符 */
+}

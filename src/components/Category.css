@@ -8,6 +8,8 @@
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 10px; /* 设置圆角 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  min-width: 250px; /* 设置最小宽度 */
+  /* min-height: 100px;  */
 }
 
 .category-header {
@@ -31,15 +33,17 @@
 }
 
 .add-button,
-.delete-button {
+.delete-button-cate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: white;
   border: none;
-  border-radius: 10%;
+  border-radius: 30%;
   width: 3%;
-  /* height: 2%; */
   font-size: 16px;
   line-height: 0px;
-  /* text-align: center; */
+
   cursor: pointer;
 }
 
@@ -47,12 +51,12 @@
   background-color: gray;
 }
 
-.delete-button {
+.delete-button-cate {
   background-color: #dc3545;
   color: white;
 }
 
-.delete-button:hover {
+.delete-button-cate:hover {
   background-color: #c82333;
 }
 
