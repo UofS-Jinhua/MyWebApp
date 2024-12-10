@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 import Breadcrumbs from "./Breadcrumbs";
 
@@ -119,6 +121,27 @@ export default function Note({ note, parentInfo }) {
     });
   };
 
+  const renderers = {
+    img: ({ alt, src, title }) => {
+      // image
+      const decodedSrc = decodeURIComponent(src);
+      const image = note.images.find((image) => image.filename === decodedSrc);
+      const imageUrl = image ? `${image.base64}` : src;
+      return <img src={imageUrl} alt={alt} title={title} />;
+    },
+    a: ({ href, children }) => {
+      // file
+      const decodedhref = decodeURIComponent(href);
+      const file = note.files.find((file) => file.name === decodedhref);
+      const fileUrl = file ? URL.createObjectURL(file) : href;
+      return (
+        <a href={fileUrl} download={file ? file.name : undefined}>
+          {children}
+        </a>
+      );
+    },
+  };
+
   return (
     <div className="note-container">
       <div className="note-header">
@@ -136,7 +159,18 @@ export default function Note({ note, parentInfo }) {
           Modify
         </button>
       </div>
-      {note.content && <p className="note-content">{note.content}</p>}
+      {note.content && (
+        // <p className="note-content">{note.content}</p>
+        <div>
+          <hr />
+          <div className="note-content">
+            {/* {console.log(note.images, note.files)} */}
+            <ReactMarkdown components={renderers} remarkPlugins={[remarkGfm]}>
+              {note.content}
+            </ReactMarkdown>
+          </div>
+        </div>
+      )}
       {note.images && note.images.length > 0 && (
         <div className="ImgBox">
           <hr />
