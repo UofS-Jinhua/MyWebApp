@@ -5,6 +5,7 @@ import { useParams, useLocation, Link, useNavigate } from "react-router-dom";
 // import components
 import Navbar from "../components/Navbar";
 import { useSubCategory } from "../context/SubCategoryContext";
+import config from "../config";
 
 export default function SubCategoryPage() {
   const location = useLocation();
@@ -24,7 +25,7 @@ export default function SubCategoryPage() {
   useEffect(() => {
     if (subCategoryId) {
       axios
-        .get(`http://localhost:3000/subsubcategories/${subCategoryId}`)
+        .get(`${config.apiBaseUrl}/subsubcategories/${subCategoryId}`)
         .then((res) => {
           setSubsubcategories(res.data);
         })
@@ -44,11 +45,11 @@ export default function SubCategoryPage() {
       };
       // send a POST request to the server
       axios
-        .post("http://localhost:3000/subsubcategories", newSubSubCategory)
+        .post(`${config.apiBaseUrl}/subsubcategories`, newSubSubCategory)
         .then((response) => {
           // when successfully added a new SubSubCategory, update the contents list
           axios
-            .get(`http://localhost:3000/subsubcategories/${subCategoryId}`)
+            .get(`${config.apiBaseUrl}/subsubcategories/${subCategoryId}`)
             .then((res) => {
               setSubsubcategories(res.data);
             })
@@ -68,7 +69,7 @@ export default function SubCategoryPage() {
 
   function deleteSubSubCategory(subsubId) {
     axios
-      .delete(`http://localhost:3000/subsubcategories/${subsubId}`)
+      .delete(`${config.apiBaseUrl}/subsubcategories/${subsubId}`)
       .then((res) => {
         const newSubSubCategories = subsubcategories.filter(
           (subsubcat) => subsubcat.id !== subsubId

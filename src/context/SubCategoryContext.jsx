@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import axios from "axios";
+import config from "../config";
 
 const SubCategoryContext = createContext();
 
@@ -11,7 +12,7 @@ export const SubCategoryProvider = ({ children }) => {
   // fetch all subcategories
   const fetchSubCategories = () => {
     axios
-      .get("http://localhost:3000/subcategories")
+      .get(`${config.apiBaseUrl}/subcategories`)
       .then((response) => {
         setSubCategories(response.data);
       })
@@ -22,7 +23,7 @@ export const SubCategoryProvider = ({ children }) => {
   const fetchSubCategoriesByCategoryId = async (categoryId) => {
     var result = [];
     await axios
-      .get(`http://localhost:3000/subcategories/${categoryId}`)
+      .get(`${config.apiBaseUrl}/subcategories/${categoryId}`)
       .then((response) => {
         result = response.data;
       })
@@ -42,7 +43,7 @@ export const SubCategoryProvider = ({ children }) => {
           name: newSubCategoryName.trim(),
         };
         axios
-          .post("http://localhost:3000/subcategories", newSubCategory)
+          .post(`${config.apiBaseUrl}/subcategories`, newSubCategory)
           .then((response) => {
             fetchSubCategories();
             resolve(response.data);
@@ -59,7 +60,7 @@ export const SubCategoryProvider = ({ children }) => {
 
   const deleteSubCategory = (subCategoryId) => {
     axios
-      .delete(`http://localhost:3000/subcategories/${subCategoryId}`)
+      .delete(`${config.apiBaseUrl}/subcategories/${subCategoryId}`)
       .then((response) => {
         fetchSubCategories();
       })

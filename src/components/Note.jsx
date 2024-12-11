@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import Breadcrumbs from "./Breadcrumbs";
+import config from "../config";
 
 import "./Note.css";
 
@@ -36,7 +37,7 @@ export default function Note({ note, parentInfo }) {
 
     // console.log("Updated Note with base64 files:", updatedNoteWithBase64Files);
     axios
-      .put(`http://localhost:3000/notes/${note.id}`, updatedNoteWithBase64Files)
+      .put(`${config.apiBaseUrl}/notes/${note.id}`, updatedNoteWithBase64Files)
       .then((response) => {
         // console.log("Note updated:", response.data);
         setShowModal(false);
@@ -52,7 +53,7 @@ export default function Note({ note, parentInfo }) {
 
   const handleDeleteClick = () => {
     axios
-      .delete(`http://localhost:3000/notes/${note.id}`)
+      .delete(`${config.apiBaseUrl}/notes/${note.id}`)
       .then((response) => {
         // console.log("Note deleted:", response.data);
         setShowModal(false);

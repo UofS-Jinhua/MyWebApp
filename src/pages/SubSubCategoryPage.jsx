@@ -5,6 +5,7 @@ import { useParams, useLocation, Link, useNavigate } from "react-router-dom";
 // import components
 import Navbar from "../components/Navbar";
 import Note from "../components/Note";
+import config from "../config";
 
 // import css styles
 import "./SubSubCategoryPage.css";
@@ -99,11 +100,11 @@ export default function SubSubCategoryPage() {
     };
 
     axios
-      .post("http://localhost:3000/notes", noteData)
+      .post(`${config.apiBaseUrl}/notes`, noteData)
       .then((response) => {
         // if success, fetch notes from the server
         axios
-          .get(`http://localhost:3000/notes/${subsubCategoryId}`)
+          .get(`${config.apiBaseUrl}/notes/${subsubCategoryId}`)
           .then((res) => {
             const notesWithFiles = res.data.map((note) => ({
               ...note,
@@ -128,7 +129,7 @@ export default function SubSubCategoryPage() {
 
   const deleteSelf = (subsubCategoryId) => {
     axios
-      .delete(`http://localhost:3000/subsubcategories/${subsubCategoryId}`)
+      .delete(`${config.apiBaseUrl}/subsubcategories/${subsubCategoryId}`)
       .then((res) => {
         navigate(
           `/${category}/${subCategory}?id=${categoryId}&sub_id=${subCategoryId}`
@@ -146,7 +147,7 @@ export default function SubSubCategoryPage() {
   useEffect(() => {
     if (subsubCategoryId) {
       axios
-        .get(`http://localhost:3000/notes/${subsubCategoryId}`)
+        .get(`${config.apiBaseUrl}/notes/${subsubCategoryId}`)
         .then((res) => {
           // console.log(res.data);
           const notesWithFiles = res.data.map((note) => ({

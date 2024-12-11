@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import axios from "axios";
+import config from "../config";
 
 const CategoryContext = createContext();
 
@@ -10,7 +11,7 @@ export const CategoryProvider = ({ children }) => {
 
   const fetchCategories = () => {
     axios
-      .get("http://localhost:3000/categories")
+      .get(`${config.apiBaseUrl}/categories`)
       .then((response) => {
         setCategories(response.data);
       })
@@ -24,7 +25,7 @@ export const CategoryProvider = ({ children }) => {
         name: newCategoryName.trim(),
       };
       axios
-        .post("http://localhost:3000/categories", newCategory)
+        .post(`${config.apiBaseUrl}/categories`, newCategory)
         .then((response) => {
           fetchCategories();
         })
@@ -38,7 +39,7 @@ export const CategoryProvider = ({ children }) => {
 
   const deleteCategory = (categoryId) => {
     axios
-      .delete(`http://localhost:3000/categories/${categoryId}`)
+      .delete(`${config.apiBaseUrl}/categories/${categoryId}`)
       .then((response) => {
         fetchCategories();
       })

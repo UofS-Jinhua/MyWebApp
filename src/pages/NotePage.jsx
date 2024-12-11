@@ -5,6 +5,7 @@ import { useParams, useLocation, Link } from "react-router-dom";
 // import components
 import Navbar from "../components/Navbar";
 import Note from "../components/Note";
+import config from "../config";
 
 // import css styles
 import "./SubSubCategoryPage.css";
@@ -35,7 +36,7 @@ export default function NotePage() {
   // fetch notes from the server
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/note/${noteId}`)
+      .get(`${config.apiBaseUrl}/note/${noteId}`)
       .then((response) => {
         const decodedNotes = response.data.map((note) => {
           const decodedFiles = note.files.map((file) => {

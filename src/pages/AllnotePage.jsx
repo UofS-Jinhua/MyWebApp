@@ -5,6 +5,7 @@ import { useParams, useLocation, Link } from "react-router-dom";
 // import components
 import Navbar from "../components/Navbar";
 import SimpleNote from "../components/SimpleNote";
+import config from "../config";
 
 // import css styles
 import "./SubSubCategoryPage.css";
@@ -40,28 +41,28 @@ export default function AllnotePage() {
   // fetch notes from the server
   useEffect(() => {
     axios
-      .get("http://localhost:3000/notes_without_contents")
+      .get(`${config.apiBaseUrl}/notes_without_contents`)
       .then((response) => {
         setNotes(response.data);
       })
       .catch((error) => console.log(error));
 
     axios
-      .get("http://localhost:3000/categories")
+      .get(`${config.apiBaseUrl}/categories`)
       .then((response) => {
         setCategories(response.data);
       })
       .catch((error) => console.log(error));
 
     axios
-      .get("http://localhost:3000/subcategories")
+      .get(`${config.apiBaseUrl}/subcategories`)
       .then((response) => {
         setSubCategories(response.data);
       })
       .catch((error) => console.log(error));
 
     axios
-      .get("http://localhost:3000/subsubcategories")
+      .get(`${config.apiBaseUrl}/subsubcategories`)
       .then((response) => {
         setSubSubCategories(response.data);
       })

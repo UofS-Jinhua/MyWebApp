@@ -5,6 +5,7 @@ import { useParams, useLocation, Link, useNavigate } from "react-router-dom";
 // import components
 import Navbar from "../components/Navbar";
 import Note from "../components/Note";
+import config from "../config";
 
 // import css styles
 import "./SubSubCategoryPage.css";
@@ -66,21 +67,21 @@ export default function SelectNote() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/categories")
+      .get(`${config.apiBaseUrl}/categories`)
       .then((response) => {
         setCategories(response.data);
       })
       .catch((error) => console.log(error));
 
     axios
-      .get("http://localhost:3000/subcategories")
+      .get(`${config.apiBaseUrl}/subcategories`)
       .then((response) => {
         setSubCategories(response.data);
       })
       .catch((error) => console.log(error));
 
     axios
-      .get(`http://localhost:3000/notes/search/${keyword}`)
+      .get(`${config.apiBaseUrl}/notes/search/${keyword}`)
       .then((response) => {
         const decodedNotes = response.data.map((note) => {
           const decodedFiles = note.files.map((file) => {
@@ -94,7 +95,7 @@ export default function SelectNote() {
       .catch((error) => console.log(error));
 
     axios
-      .get("http://localhost:3000/subsubcategories")
+      .get(`${config.apiBaseUrl}/subsubcategories`)
       .then((response) => {
         setSubSubCategories(response.data);
       })
