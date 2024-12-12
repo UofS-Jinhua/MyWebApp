@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import config from "../config";
+import "./LoginPage.css";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -28,7 +29,7 @@ export default function LoginPage() {
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <div>
-          <label>Username:</label>
+          <label>Username: </label>
           <input
             type="text"
             value={username}
@@ -36,7 +37,7 @@ export default function LoginPage() {
           />
         </div>
         <div>
-          <label>Password:</label>
+          <label>Password: </label>
           <input
             type="password"
             value={password}
