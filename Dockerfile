@@ -1,29 +1,30 @@
-# 使用官方的 Node.js 镜像作为基础镜像
-FROM node:latest
+# Use the official Node.js image as the base image for building the app
+FROM node:latest as build
 
-# 设置工作目录
-WORKDIR /app
+# Set the working directory
+WORKDIR /usr/src/app
 
-# 复制 package.json 和 package-lock.json 文件
+
+# Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
-# 安装项目依赖
+# Install the project dependencies
 RUN npm install
 
-# 复制项目的所有文件到工作目录
+# Copy the rest of the application code to the working directory
 COPY . .
 
-# 构建项目
+# Build the React application
 RUN npm run build
 
-# 使用 nginx 作为 web 服务器
-FROM nginx:alpine
+# Use the official Nginx image to serve the built app
+FROM nginx:stable-alpine
 
-# 复制构建的文件到 nginx 的 html 目录
-COPY --from=0 /app/build /usr/share/nginx/html
+# Copy the built React app from the build stage to the Nginx html folder
+COPY --from=build /usr/src/app/build /usr/share/nginx/html
 
-# 暴露端口
-EXPOSE 8080
+# Expose port 80 to the outside world
+EXPOSE 80
 
-# 启动 nginx
+# Command to run Nginx
 CMD ["nginx", "-g", "daemon off;"]
