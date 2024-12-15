@@ -11,16 +11,18 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
+    console.log(config.apiBaseUrl);
     e.preventDefault();
     try {
-      await axios.post(
-        `${config.apiBaseUrl}/login`,
-        { username, password },
-        { withCredentials: true }
-      );
+      const response = await axios.post(`${config.apiBaseUrl}/login`, {
+        username,
+        password,
+      });
+      localStorage.setItem("token", response.data.token);
       navigate("/");
     } catch (error) {
       setError("Invalid username or password");
+      console.log(error);
     }
   };
 

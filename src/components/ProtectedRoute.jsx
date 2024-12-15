@@ -8,9 +8,14 @@ export default function ProtectedRoute({ children }) {
 
   useEffect(() => {
     const checkAuth = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setIsAuthenticated(false);
+        return;
+      }
       try {
         await axios.get(`${config.apiBaseUrl}/check-auth`, {
-          withCredentials: true,
+          headers: { Authorization: `Bearer ${token}` },
         });
         setIsAuthenticated(true);
       } catch (error) {
