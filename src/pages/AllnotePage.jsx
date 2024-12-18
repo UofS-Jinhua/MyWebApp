@@ -41,13 +41,6 @@ export default function AllnotePage() {
   // fetch notes from the server
   useEffect(() => {
     axios
-      .get(`${config.apiBaseUrl}/notes_without_contents`)
-      .then((response) => {
-        setNotes(response.data);
-      })
-      .catch((error) => console.log(error));
-
-    axios
       .get(`${config.apiBaseUrl}/categories`)
       .then((response) => {
         setCategories(response.data);
@@ -67,21 +60,30 @@ export default function AllnotePage() {
         setSubSubCategories(response.data);
       })
       .catch((error) => console.log(error));
+
+    axios
+      .get(`${config.apiBaseUrl}/notes_without_contents`)
+      .then((response) => {
+        setNotes(response.data);
+      })
+      .catch((error) => console.log(error));
   }, []);
 
   return (
     <div>
       <Navbar />
 
-      <div className="subsubcategory-page-container">
-        {notes.map((note) => (
-          <SimpleNote
-            key={note.id}
-            noteInfo={note}
-            parentInfo={getParentInfo(note)}
-          />
-        ))}
-      </div>
+      {notes.length > 0 && (
+        <div className="subsubcategory-page-container">
+          {notes.map((note) => (
+            <SimpleNote
+              key={note.id}
+              noteInfo={note}
+              parentInfo={getParentInfo(note)}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

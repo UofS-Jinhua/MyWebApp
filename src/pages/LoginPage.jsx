@@ -11,7 +11,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    console.log(config.apiBaseUrl);
+    // console.log(config.apiBaseUrl);
     e.preventDefault();
     try {
       const response = await axios.post(`${config.apiBaseUrl}/login`, {
