@@ -60,6 +60,7 @@ body,
   margin: 2% 5% 0% 5%;
   font-weight: bold;
   width: 90%;
+  min-width: 460px;
 }
 
 .add-category-button {

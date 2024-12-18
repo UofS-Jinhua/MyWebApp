@@ -23,15 +23,30 @@
   color: #333;
 }
 
+.category-name {
+  display: flex;
+  align-items: center;
+}
+
 /* Add Button Style------------------------ */
 .category-buttons {
   /* width: 5%; */
-  margin-left: 1%;
+  margin-left: 0%;
   display: flex;
   text-align: center;
   justify-content: space-between;
+  gap: 0px;
 }
 
+.edit-mode-button {
+  background-image: url("../images/edit-pencil.svg");
+  background-repeat: no-repeat;
+  background-color: transparent;
+  background-size: contain;
+}
+
+.edit-back-button,
+.edit-save-button,
 .add-button,
 .delete-button-cate {
   display: flex;

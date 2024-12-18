@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useLocation, Link, useNavigate } from "react-router-dom";
 
 // import components
@@ -24,6 +24,7 @@ export default function SubSubCategoryPage() {
   const [newImages, setNewImages] = useState([]);
   const [newFiles, setNewFiles] = useState([]);
   const [showNewNote, setShowNewNote] = useState(false);
+  const newNoteContainerRef = useRef(null);
 
   // Encode file to base64
   const convertFileToBase64 = (file) => {
@@ -141,6 +142,9 @@ export default function SubSubCategoryPage() {
 
   const handleNewNoteClick = () => {
     setShowNewNote(true);
+    setTimeout(() => {
+      newNoteContainerRef.current.scrollIntoView({ behavior: "smooth" });
+    }, 0);
   };
 
   // fetch notes from the server
@@ -199,7 +203,7 @@ export default function SubSubCategoryPage() {
       </div>
 
       {showNewNote && (
-        <div className="new-note-container">
+        <div className="new-note-container" ref={newNoteContainerRef}>
           {/* user input content: title ------------------------ */}
           <input
             type="text"

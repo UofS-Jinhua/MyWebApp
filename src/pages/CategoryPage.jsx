@@ -13,6 +13,7 @@ import { useSubCategory } from "../context/SubCategoryContext";
 
 // import components
 import Navbar from "../components/Navbar";
+import Breadcrumbs from "../components/Breadcrumbs";
 
 // import css styles
 import "../App.css";
@@ -27,17 +28,25 @@ export default function CategoryPage() {
 
   // global context
   const { fetchCategories, deleteCategory } = useCategory();
-  const { fetchSubCategoriesByCategoryId, addSubCategory, deleteSubCategory } =
-    useSubCategory();
+  const {
+    fetchSubCategoriesByCategoryId,
+    addSubCategory,
+    deleteSubCategory,
+    updateSubCategory,
+  } = useSubCategory();
 
   // local state
   const [subcategories, setSubcategories] = useState([]);
+  const [newSubcatName, setNewSubcatName] = useState([]);
+  const [openEdit, setOpenEdit] = useState([]);
 
   async function fetchData() {
     const currentSubcategories = await fetchSubCategoriesByCategoryId(
       categoryId
     );
     setSubcategories(currentSubcategories);
+    setNewSubcatName(currentSubcategories);
+    setOpenEdit(currentSubcategories.map((subcat) => false));
   }
 
   async function addContent() {
@@ -66,19 +75,17 @@ export default function CategoryPage() {
     setSubcategories(newContents);
   }
 
+  function splittitle(title) {
+    if (title.length > 20) {
+      return title.slice(0, 20) + "...";
+    } else {
+      return title;
+    }
+  }
+
   useEffect(() => {
     fetchData();
   }, [categoryId]);
-
-  // useEffect(() => {
-  //   if (location.state && location.state.deleted) {
-  //     const deletedSubCategoryId = parseInt(location.state.subc_id);
-  //     const newContents = subcategories.filter(
-  //       (subcat) => subcat.id !== deletedSubCategoryId
-  //     );
-  //     setSubcategories(newContents);
-  //   }
-  // }, [location.state, categoryId]);
 
   // main body of the component -------------------------------------------------
   return (
@@ -96,15 +103,84 @@ export default function CategoryPage() {
       {subcategories.length > 0 && (
         <div className="category-page-container">
           <ul>
-            {subcategories.map((subcat) => (
+            {subcategories.map((subcat, index) => (
               <li key={subcat.id}>
-                <Link
-                  to={`/${category}/${subcat.name}?id=${categoryId}&sub_id=${subcat.id}`}
-                >
-                  {subcat.name}
-                </Link>
-
-                <button onClick={() => delSubCate(subcat.id)}>Delete</button>
+                {openEdit[index] ? (
+                  <div>
+                    <div className="edit-subcategory">
+                      <input
+                        type="text"
+                        value={newSubcatName[index].name}
+                        onChange={(e) =>
+                          setNewSubcatName((prev) =>
+                            prev.map((item, i) =>
+                              i === index
+                                ? { ...item, name: e.target.value }
+                                : item
+                            )
+                          )
+                        }
+                      />
+                      <button
+                        className="delete-button-subcate"
+                        onClick={() => {
+                          updateSubCategory(
+                            subcat.id,
+                            newSubcatName[index].name
+                          );
+                          setOpenEdit((prev) =>
+                            prev.map((edit, i) => (i === index ? false : edit))
+                          );
+                        }}
+                      >
+                        √
+                      </button>
+                      <button
+                        className="delete-button-subcate"
+                        onClick={() => {
+                          setOpenEdit((prev) =>
+                            prev.map((edit, i) => (i === index ? false : edit))
+                          );
+                          setNewSubcatName((prev) =>
+                            prev.map((item, i) =>
+                              i === index
+                                ? { ...item, name: subcat.name }
+                                : item
+                            )
+                          );
+                        }}
+                      >
+                        x
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <div className="edit-subcategory">
+                      <Link
+                        to={`/${category}/${newSubcatName[index].name}?id=${categoryId}&sub_id=${subcat.id}`}
+                      >
+                        {splittitle(newSubcatName[index].name)}
+                      </Link>
+                      <button
+                        className="edit-mode-button-subcate"
+                        onClick={() =>
+                          setOpenEdit((prev) =>
+                            prev.map((edit, i) => (i === index ? true : edit))
+                          )
+                        }
+                      ></button>
+                    </div>
+                  </div>
+                )}
+                {openEdit[index] === false && (
+                  <button
+                    className="delete-button-subcate"
+                    onClick={() => delSubCate(subcat.id)}
+                  >
+                    Delete
+                  </button>
+                )}
               </li>
             ))}
           </ul>

@@ -45,10 +45,10 @@ export default function Navbar() {
             <div className="notes-dropdown">
               <ul>
                 <li>
-                  <Link to="/">All Categories</Link>
+                  <Link to="/">Categories</Link>
                 </li>
                 <li>
-                  <Link to="/all-notes">All Notes</Link>
+                  <Link to="/all-notes">Notes</Link>
                 </li>
               </ul>
             </div>

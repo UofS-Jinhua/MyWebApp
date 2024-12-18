@@ -33,14 +33,13 @@ export default function Breadcrumbs({ breadcrumbsData }) {
     subsubCategoryId = breadcrumbsData.subsubCategoryId;
   }
 
-  // console.log(
-  //   category,
-  //   subCategory,
-  //   subsubCategory,
-  //   categoryId,
-  //   subCategoryId,
-  //   subsubCategoryId
-  // );
+  const splittitle = (title) => {
+    if (title.length > 20) {
+      return title.substring(0, 20) + "...";
+    } else {
+      return title;
+    }
+  };
 
   return (
     <div className="breadcrumbs">
@@ -48,16 +47,20 @@ export default function Breadcrumbs({ breadcrumbsData }) {
       {category && (
         <>
           {" > "}
-          <Link to={`/${category}?id=${categoryId}`}>{category}</Link>
+          <Link to={`/${category}?id=${categoryId}`}>
+            {splittitle(category)}
+          </Link>
         </>
       )}
       {subCategory && (
         <>
           {" > "}
           <Link
-            to={`/${category}/${subCategory}?id=${categoryId}&sub_id=${subCategoryId}`}
+            to={`/${category}/${subCategory}?id=${categoryId}&sub_id=${splittitle(
+              subCategoryId
+            )}`}
           >
-            {subCategory}
+            {splittitle(subCategory)}
           </Link>
         </>
       )}
@@ -67,7 +70,7 @@ export default function Breadcrumbs({ breadcrumbsData }) {
           <Link
             to={`/${category}/${subCategory}/${subsubCategory}?id=${categoryId}&sub_id=${subCategoryId}&subsub_id=${subsubCategoryId}`}
           >
-            {subsubCategory}
+            {splittitle(subsubCategory)}
           </Link>
         </>
       )}

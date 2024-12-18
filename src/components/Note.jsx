@@ -131,6 +131,44 @@ export default function Note({ note, parentInfo }) {
       return <img src={imageUrl} alt={alt} title={title} />;
     },
     a: ({ href, children }) => {
+      // YouTube link
+      const youtubeMatch = href.match(
+        /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+      );
+      if (youtubeMatch) {
+        const videoId = youtubeMatch[1];
+        return (
+          <div className="youtube-video">
+            <iframe
+              src={`https://www.youtube.com/embed/${videoId}`}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+        );
+      }
+
+      // Bilibili link
+      const bilibiliMatch = href.match(
+        /(?:https?:\/\/)?(?:www\.)?bilibili\.com\/video\/([a-zA-Z0-9_-]+)/
+      );
+      if (bilibiliMatch) {
+        const videoId = bilibiliMatch[1];
+        return (
+          <div className="bilibili-video">
+            <iframe
+              src={`https://player.bilibili.com/player.html?bvid=${videoId}&autoplay=0`}
+              title="Bilibili video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+        );
+      }
+
       // file
       const decodedhref = decodeURIComponent(href);
       const file = note.files.find((file) => file.name === decodedhref);

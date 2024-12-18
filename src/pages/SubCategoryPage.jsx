@@ -2,6 +2,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, useLocation, Link, useNavigate } from "react-router-dom";
 
+// import css styles
+// import "./SubCategoryPage.css";
+
 // import components
 import Navbar from "../components/Navbar";
 import { useSubCategory } from "../context/SubCategoryContext";
@@ -20,6 +23,8 @@ export default function SubCategoryPage() {
   const { deleteSubCategory } = useSubCategory();
   // local state to store subsubcategories
   const [subsubcategories, setSubsubcategories] = useState([]);
+  const [newSubsubcatName, setNewSubsubcatName] = useState([]);
+  const [openEdit, setOpenEdit] = useState([]);
 
   // fetch subsubcategories from the server
   useEffect(() => {
@@ -28,6 +33,8 @@ export default function SubCategoryPage() {
         .get(`${config.apiBaseUrl}/subsubcategories/${subCategoryId}`)
         .then((res) => {
           setSubsubcategories(res.data);
+          setNewSubsubcatName(res.data);
+          setOpenEdit(res.data.map((subsubcat) => false));
         })
         .catch((err) => console.error(err));
     }
@@ -61,6 +68,27 @@ export default function SubCategoryPage() {
     }
   }
 
+  function updateSubSubCategory(subsubId, newSubsubName) {
+    const newSubSubCategory = {
+      name: newSubsubName,
+    };
+    axios
+      .put(
+        `${config.apiBaseUrl}/subsubcategories/${subsubId}`,
+        newSubSubCategory
+      )
+      .then((response) => {
+        setSubsubcategories((prev) =>
+          prev.map((subsub) =>
+            subsub.id === subsubId ? { ...subsub, name: newSubsubName } : subsub
+          )
+        );
+      })
+      .catch((error) => {
+        console.error("An error occured when updating subsubcate: ", error);
+      });
+  }
+
   function delSubCate(subCateId) {
     deleteSubCategory(subCateId);
     navigate(`/${category}?id=${categoryId}`);
@@ -77,6 +105,14 @@ export default function SubCategoryPage() {
         setSubsubcategories(newSubSubCategories);
       })
       .catch((err) => console.error(err));
+  }
+
+  function splittitle(title) {
+    if (title.length > 20) {
+      return title.slice(0, 20) + "...";
+    } else {
+      return title;
+    }
   }
 
   // main body of the component -------------------------------------------------
@@ -99,18 +135,83 @@ export default function SubCategoryPage() {
       {subsubcategories.length > 0 && (
         <div className="category-page-container">
           <ul>
-            {subsubcategories.map((subsubcat) => (
+            {subsubcategories.map((subsubcat, index) => (
               <li key={subsubcat.id}>
-                <Link
-                  to={`/${category}/${subCategory}/${subsubcat.name}?id=${categoryId}&sub_id=${subCategoryId}&subsub_id=${subsubcat.id}`}
-                >
-                  {subsubcat.name}
-                </Link>
+                {openEdit[index] ? (
+                  <div>
+                    <input
+                      type="text"
+                      value={newSubsubcatName[index].name}
+                      onChange={(e) => {
+                        setNewSubsubcatName((prev) =>
+                          prev.map((value, i) =>
+                            i === index
+                              ? { ...value, name: e.target.value }
+                              : value
+                          )
+                        );
+                      }}
+                    />
+                    <button
+                      className="delete-button-subcate"
+                      onClick={() => {
+                        updateSubSubCategory(
+                          subsubcat.id,
+                          newSubsubcatName[index].name
+                        );
+                        setOpenEdit((prev) =>
+                          prev.map((edit, i) => (i === index ? false : edit))
+                        );
+                      }}
+                    >
+                      √
+                    </button>
+                    <button
+                      className="delete-button-subcate"
+                      onClick={() => {
+                        setOpenEdit((prev) =>
+                          prev.map((edit, i) => (i === index ? false : edit))
+                        );
+                        setNewSubsubcatName((prev) =>
+                          prev.map((value, i) =>
+                            i === index
+                              ? { ...value, name: subsubcat.name }
+                              : value
+                          )
+                        );
+                      }}
+                    >
+                      x
+                    </button>
+                  </div>
+                ) : (
+                  <div className="edit-subcategory">
+                    <Link
+                      to={`/${category}/${subCategory}/${subsubcat.name}?id=${categoryId}&sub_id=${subCategoryId}&subsub_id=${subsubcat.id}`}
+                    >
+                      {splittitle(subsubcat.name)}
+                    </Link>
+                    <button
+                      className="edit-mode-button-subcate"
+                      onClick={() => {
+                        const newOpenEdit = openEdit.map((value, i) =>
+                          i === index ? true : value
+                        );
+                        setOpenEdit(newOpenEdit);
+                      }}
+                    ></button>
+                  </div>
+                )}
 
-                <button onClick={() => deleteSubSubCategory(subsubcat.id)}>
-                  {" "}
-                  Delete{" "}
-                </button>
+                {openEdit[index] === false && (
+                  <button
+                    className="delete-button-subcate"
+                    onClick={() => deleteSubSubCategory(subsubcat.id)}
+                  >
+                    {" "}
+                    Delete{" "}
+                  </button>
+                )}
               </li>
             ))}
           </ul>

@@ -5,9 +5,9 @@
   background-color: black;
   border-bottom: 1px solid #dee2e6;
   width: 100%;
+  min-width: 710px;
   margin: 0;
   padding: 0;
-
   box-sizing: border-box;
   /* overflow: fixed; */
   /* position: fixed; */
@@ -22,6 +22,7 @@
   display: flex;
   padding-top: 1%;
   padding-left: 5%;
+  min-width: 100px;
   /* white-space: nowrap; */
 }
 
@@ -30,6 +31,7 @@
   justify-content: flex-end;
   flex: 1;
   padding-right: 5%;
+  min-width: 100px;
 }
 
 /* Search box ------------------------------------------- */
@@ -37,10 +39,13 @@
   display: flex;
   align-items: center;
   margin-right: 20px;
+  min-width: 230px;
 }
 
 .search-box input {
+  /* width: 50px; */
   padding: 5px;
+  min-width: 50px;
   border: 1px solid #ccc;
   border-radius: 5px 0 0 5px;
   outline: none;

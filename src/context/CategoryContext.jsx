@@ -48,9 +48,29 @@ export const CategoryProvider = ({ children }) => {
       });
   };
 
+  const updateCategory = (categoryId, newCategoryName) => {
+    const newCategory = {
+      name: newCategoryName,
+    };
+    axios
+      .put(`${config.apiBaseUrl}/categories/${categoryId}`, newCategory)
+      .then((response) => {
+        fetchCategories();
+      })
+      .catch((error) => {
+        console.error("An error occured when updating category: ", error);
+      });
+  };
+
   return (
     <CategoryContext.Provider
-      value={{ categories, fetchCategories, addCategory, deleteCategory }}
+      value={{
+        categories,
+        fetchCategories,
+        addCategory,
+        deleteCategory,
+        updateCategory,
+      }}
     >
       {children}
     </CategoryContext.Provider>

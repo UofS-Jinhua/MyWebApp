@@ -58,6 +58,7 @@ export const SubCategoryProvider = ({ children }) => {
     });
   };
 
+  // delete a subcategory
   const deleteSubCategory = (subCategoryId) => {
     axios
       .delete(`${config.apiBaseUrl}/subcategories/${subCategoryId}`)
@@ -69,6 +70,25 @@ export const SubCategoryProvider = ({ children }) => {
       });
   };
 
+  // update a subcategory's name by id
+  const updateSubCategory = (subCategoryId, newSubCategoryName) => {
+    const newSubCategory = {
+      name: newSubCategoryName,
+    };
+    axios
+      .put(
+        `${config.apiBaseUrl}/subcategories/${subCategoryId}`,
+        newSubCategory
+      )
+      .then((response) => {
+        fetchSubCategories();
+      })
+      .catch((error) => {
+        console.error("An error occured when updating subcategory: ", error);
+      });
+  };
+
+  // find subcategories by category id locally
   const findSubCategories_local = (categoryId) => {
     const result = subcategories.filter(
       (subcategory) => subcategory.category_id === categoryId
@@ -85,6 +105,7 @@ export const SubCategoryProvider = ({ children }) => {
         addSubCategory,
         deleteSubCategory,
         findSubCategories_local,
+        updateSubCategory,
       }}
     >
       {children}
