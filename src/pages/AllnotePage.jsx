@@ -73,17 +73,20 @@ export default function AllnotePage() {
     <div>
       <Navbar />
 
-      {notes.length > 0 && (
-        <div className="subsubcategory-page-container">
-          {notes.map((note) => (
-            <SimpleNote
-              key={note.id}
-              noteInfo={note}
-              parentInfo={getParentInfo(note)}
-            />
-          ))}
-        </div>
-      )}
+      {notes.length > 0 &&
+        categories.length > 0 &&
+        subCategories.length > 0 &&
+        subsubCategories.length > 0 && (
+          <div className="subsubcategory-page-container">
+            {notes.map((note) => (
+              <SimpleNote
+                key={note.id}
+                noteInfo={note}
+                parentInfo={getParentInfo(note)}
+              />
+            ))}
+          </div>
+        )}
     </div>
   );
 }
