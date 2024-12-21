@@ -54,6 +54,8 @@ export default function CategoryPage() {
       await addSubCategory(categoryId);
       const newContents = await fetchSubCategoriesByCategoryId(categoryId);
       setSubcategories(newContents);
+      setNewSubcatName(newContents);
+      setOpenEdit(newContents.map((subcat) => false));
     } catch (error) {
       console.error(
         "Error adding subcategory and fetching subcategories: ",

@@ -59,6 +59,8 @@ export default function SubCategoryPage() {
             .get(`${config.apiBaseUrl}/subsubcategories/${subCategoryId}`)
             .then((res) => {
               setSubsubcategories(res.data);
+              setNewSubsubcatName(res.data);
+              setOpenEdit(res.data.map((subsubcat) => false));
             })
             .catch((err) => console.error(err));
         })
