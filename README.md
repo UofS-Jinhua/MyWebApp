@@ -5,8 +5,8 @@
 3. Database: [MySQL](https://github.com/UofS-Jinhua/MyWebApp-DB)
 
 ### Deployment:
-1.Using Azure Kubernetes
-a.See []()
-2.Using Azure VM
-a.Clone all required parts to vm
-b.Using PM2 for deployment
+1. Using Azure Kubernetes
+  a. See []()
+2. Using Azure VM
+  a. Clone all required parts to vm
+  b. Using PM2 for deployment
