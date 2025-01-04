@@ -10,4 +10,5 @@
   
 2. Using Azure VM
 > a.Clone all required parts to vm
+
   b. Using PM2 for deployment
