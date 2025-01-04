@@ -6,7 +6,7 @@
 
 ### Deployment:
 1. Using Azure Kubernetes
-   a. See []()
+a. See []()
 3. Using Azure VM
-   a. Clone all required parts to vm
-   b. Use PM2 for deployment
+a. Clone all required parts to vm
+b. Use PM2 for deployment
