@@ -6,7 +6,7 @@
 
 ### Deployment:
 1. Using Azure Kubernetes
->  See []()
+>  See [my k8s example](https://git.cs.usask.ca/jih216/cmpt842_k8s)
   
 2. Using Azure VM
 > a.Clone all required parts to vm
