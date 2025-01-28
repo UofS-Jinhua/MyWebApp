@@ -24,6 +24,7 @@ export default function SubSubCategoryPage() {
   const [newImages, setNewImages] = useState([]);
   const [newFiles, setNewFiles] = useState([]);
   const [showNewNote, setShowNewNote] = useState(false);
+  const [sortOption, setSortOption] = useState("oldest");
   const newNoteContainerRef = useRef(null);
 
   // Encode file to base64
@@ -168,6 +169,26 @@ export default function SubSubCategoryPage() {
     }
   }, [subsubCategoryId]);
 
+  const sortingnote = (e) => {
+    const option = e.target.value;
+    setSortOption(option);
+
+    let sortedNotes = [...myNotes];
+
+    if (option === "newest") {
+      sortedNotes.sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+    } else if (option === "oldest") {
+      sortedNotes.sort(
+        (a, b) => new Date(a.created_at) - new Date(b.created_at)
+      );
+    } else if (option === "a-z") {
+      sortedNotes.sort((a, b) => a.title.localeCompare(b.title));
+    }
+    setMyNotes(sortedNotes);
+  };
+
   return (
     <div>
       <Navbar />
@@ -175,6 +196,13 @@ export default function SubSubCategoryPage() {
         <button className="add-category-button" onClick={handleNewNoteClick}>
           New Note
         </button>
+
+        <select className="sort-selection" onClick={sortingnote}>
+          <option value="oldest">Oldest</option>
+          <option value="newest">Newest</option>
+          <option value="a-z">A-Z</option>
+        </select>
+
         <button
           className="del-category-button"
           onClick={() => deleteSelf(subsubCategoryId)}

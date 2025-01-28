@@ -209,17 +209,44 @@
   flex-direction: column;
   align-items: flex-start;
   overflow: auto;
+  max-width: 1000px;
+}
+
+.parent-info {
+  display: flex;
+  justify-content: space-between;
+  width: 91%;
+  margin-bottom: 10px;
+  font-size: 16px;
+  gap: 20px;
+}
+/* @media (min-width: 350px) {
+  .parent-info {
+    width: 350px;
+  }
+} */
+
+.parent-info option {
+  font-size: 16px;
+  width: 800px;
+  background-color: rgb(117, 117, 117);
+}
+
+.parent-info select {
+  font-size: 16px;
+  width: 800px;
+  background-color: rgb(117, 117, 117);
 }
 
 .modal-content-title {
   margin-bottom: 10px;
-  width: 100%;
+  width: 92%;
   height: 100%;
   font-size: 20px;
   text-align: left;
 }
 .modal-content-title-input {
-  width: 50%;
+  width: 92%;
   padding: 10px;
   margin-left: 5px;
   border: 1px solid #ccc;

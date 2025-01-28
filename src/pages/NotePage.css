@@ -1,0 +1,96 @@
+/* NotePage.css */
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 600px;
+
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  color: #333; /* 设置字体颜色 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-header {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.modal-section {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.modal-section h3 {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+option {
+  font-size: 16px;
+  /* width: 800px; */
+  background-color: rgb(117, 117, 117);
+}
+
+select {
+  font-size: 16px;
+  /* width: 800px; */
+  background-color: rgb(117, 117, 117);
+}
+
+.modal-section ul {
+  list-style-type: none;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.modal-section li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.modal-section button {
+  padding: 5px 10px;
+  border: none;
+  background-color: black;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-section button:hover {
+  background-color: gray;
+}
+
+.modal-close-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #dc3545;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.modal-close-button:hover {
+  background-color: #c82333;
+}

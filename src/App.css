@@ -63,6 +63,28 @@ body,
   min-width: 460px;
 }
 
+.sort-selection {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #b6b6b6;
+  color: #333;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.sort-selection:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.sort-selection option {
+  padding: 10px;
+  background-color: #fff;
+  color: #333;
+}
+
 .add-category-button {
   /* position: absolute; */
   top: 6%;

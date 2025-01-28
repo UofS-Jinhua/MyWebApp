@@ -15,6 +15,7 @@ export default function AllnotePage() {
   const [subCategories, setSubCategories] = useState([]);
   const [subsubCategories, setSubSubCategories] = useState([]);
   const [notes, setNotes] = useState([]);
+  const [sortOption, setSortOption] = useState("oldest");
 
   const getParentInfo = (note) => {
     const subsubCategory = subsubCategories.find(
@@ -69,9 +70,38 @@ export default function AllnotePage() {
       .catch((error) => console.log(error));
   }, []);
 
+  const sortingnote = (e) => {
+    const option = e.target.value;
+    setSortOption(option);
+
+    let sortedNotes = [...notes];
+
+    if (option === "newest") {
+      sortedNotes.sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+    } else if (option === "oldest") {
+      sortedNotes.sort(
+        (a, b) => new Date(a.created_at) - new Date(b.created_at)
+      );
+    } else if (option === "a-z") {
+      sortedNotes.sort((a, b) => a.title.localeCompare(b.title));
+    }
+    setNotes(sortedNotes);
+  };
+
   return (
     <div>
       <Navbar />
+
+      <div className="categories-directory">
+        {/* <Breadcrumbs /> */}
+        <select className="sort-selection" onClick={sortingnote}>
+          <option value="oldest">Oldest</option>
+          <option value="newest">Newest</option>
+          <option value="a-z">A-Z</option>
+        </select>
+      </div>
 
       {notes.length > 0 &&
         categories.length > 0 &&

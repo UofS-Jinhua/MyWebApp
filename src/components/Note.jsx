@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -8,11 +8,20 @@ import Breadcrumbs from "./Breadcrumbs";
 import config from "../config";
 
 import "./Note.css";
+import { use } from "react";
 
 export default function Note({ note, parentInfo }) {
+  const navigate = useNavigate();
+
   const [clickedImage, setClickedImage] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [updatedNote, setUpdatedNote] = useState(note);
+  const [updatedparentInfo, setUpdatedParentInfo] = useState(parentInfo);
+  const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
+  const [subsubCategories, setSubSubCategories] = useState([]);
+  const [changedSubsubCategory, setChangedSubsubCategory] = useState(false);
+  const [shouldSaveNote, setShouldSaveNote] = useState(false);
 
   const handleClick = (image) => {
     setClickedImage(image);
@@ -41,10 +50,38 @@ export default function Note({ note, parentInfo }) {
       .then((response) => {
         // console.log("Note updated:", response.data);
         setShowModal(false);
+
         note.title = updatedNote.title;
         note.content = updatedNote.content;
         note.images = updatedNote.images;
         note.files = updatedNote.files;
+
+        if (changedSubsubCategory) {
+          note.category_id = updatedNote.category_id;
+          note.subcategory_id = updatedNote.subcategory_id;
+          note.subsubcategory_id = updatedNote.subsubcategory_id;
+
+          parentInfo.category = categories.find(
+            (category) => category.id === updatedNote.category_id
+          ).name;
+          parentInfo.subCategory = subCategories.find(
+            (subcategory) => subcategory.id === updatedNote.subcategory_id
+          ).name;
+          parentInfo.subsubCategory = subsubCategories.find(
+            (subsubcategory) =>
+              subsubcategory.id === updatedNote.subsubcategory_id
+          ).name;
+
+          parentInfo.categoryId = updatedNote.category_id;
+          parentInfo.subCategoryId = updatedNote.subcategory_id;
+          parentInfo.subsubCategoryId = updatedNote.subsubcategory_id;
+
+          setChangedSubsubCategory(false);
+          window.location.reload();
+          navigate(
+            `/${parentInfo.category}/${parentInfo.subCategory}/${parentInfo.subsubCategory}?id=${parentInfo.categoryId}&sub_id=${parentInfo.subCategoryId}?subsub_id=${parentInfo.subsubCategoryId}`
+          );
+        }
       })
       .catch((error) => {
         console.error("Error updating note:", error);
@@ -80,12 +117,19 @@ export default function Note({ note, parentInfo }) {
     const extension = filename.slice(index);
     const name = filename.slice(0, index);
 
-    if (name.length > 10) {
+    if (name.length > 20) {
       return (
         name.slice(0, 10) + "..." + name.slice(index - 5, index) + extension
       );
     }
     return filename;
+  };
+
+  const splitCategoryName = (categoryName) => {
+    if (categoryName.length > 10) {
+      return categoryName.slice(0, 10) + "...";
+    }
+    return categoryName;
   };
 
   const handleImageChange = async (e) => {
@@ -181,6 +225,37 @@ export default function Note({ note, parentInfo }) {
     },
   };
 
+  useEffect(() => {
+    axios
+      .get(`${config.apiBaseUrl}/categories`)
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((error) => console.log(error));
+
+    axios
+      .get(`${config.apiBaseUrl}/subcategories`)
+      .then((response) => {
+        setSubCategories(response.data);
+      })
+      .catch((error) => console.log(error));
+
+    axios
+      .get(`${config.apiBaseUrl}/subsubcategories`)
+      .then((response) => {
+        setSubSubCategories(response.data);
+      })
+      .catch((error) => console.log(error));
+  }, [showModal]);
+
+  useEffect(() => {
+    if (shouldSaveNote) {
+      handleSaveNote();
+      setShouldSaveNote(false);
+      setChangedSubsubCategory(false);
+    }
+  }, [updatedNote, shouldSaveNote, changedSubsubCategory]);
+
   return (
     <div className="note-container">
       <div className="note-header">
@@ -275,7 +350,7 @@ export default function Note({ note, parentInfo }) {
 
       <div className="note-footer">
         <div className="note-breadcrumbs">
-          <Breadcrumbs breadcrumbsData={parentInfo} />
+          <Breadcrumbs breadcrumbsData={updatedparentInfo} />
         </div>
         <div className="note-creation-time">
           <p>Created: {new Date(note.created_at).toLocaleString()}</p>
@@ -286,7 +361,39 @@ export default function Note({ note, parentInfo }) {
       {showModal && (
         <div className="modal">
           <div className="modal-content">
+            {/* change the category, subcategory, and subsubcategory --------------------- */}
+
+            <div className="parent-info">
+              <label className="modal-content-title" htmlFor="subsubcategory">
+                Subsubcategory:
+              </label>
+              <select
+                id="subsubcategory"
+                value={updatedNote.subsubcategory_id}
+                onChange={(e) => {
+                  const new_subsubcate = parseInt(e.target.value);
+                  const selectedSubcategory = subsubCategories.find(
+                    (subsubcategory) => subsubcategory.id === new_subsubcate
+                  );
+                  setUpdatedNote({
+                    ...updatedNote,
+                    category_id: selectedSubcategory.category_id,
+                    subcategory_id: selectedSubcategory.subcategory_id,
+                    subsubcategory_id: new_subsubcate,
+                  });
+                  setChangedSubsubCategory(true);
+                }}
+              >
+                {subsubCategories.map((subsubcategory) => (
+                  <option key={subsubcategory.id} value={subsubcategory.id}>
+                    {subsubcategory.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             {/* user input Title and Content: text ------------------------ */}
+
             <label className="modal-content-title">
               Title:
               <input
@@ -373,7 +480,10 @@ export default function Note({ note, parentInfo }) {
               </div>
             </div>
             <div className="button-container">
-              <button className="update-button" onClick={handleSaveNote}>
+              <button
+                className="update-button"
+                onClick={(e) => setShouldSaveNote(true)}
+              >
                 Update
               </button>
               <button className="delete-button" onClick={handleDeleteClick}>
@@ -384,6 +494,8 @@ export default function Note({ note, parentInfo }) {
                 onClick={() => {
                   setShowModal(false);
                   setUpdatedNote(note);
+                  setUpdatedParentInfo(parentInfo);
+                  setChangedSubsubCategory(false);
                 }}
               >
                 Back
