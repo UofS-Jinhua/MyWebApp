@@ -94,3 +94,15 @@ select {
 .modal-close-button:hover {
   background-color: #c82333;
 }
+
+.related-note-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 250px;
+  margin-bottom: 20px;
+}
+
+.related-notes-title {
+  color: black;
+}

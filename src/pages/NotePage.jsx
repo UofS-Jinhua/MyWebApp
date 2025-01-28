@@ -22,6 +22,7 @@ export default function NotePage() {
   const noteId = queryParams.get("note_id");
 
   const [showModal, setShowModal] = useState(false);
+  const [sortOption, setSortOption] = useState("oldest");
 
   // store all the categories, subcategories, subsubcategories
   const [categories, setCategories] = useState([]);
@@ -170,6 +171,35 @@ export default function NotePage() {
     setShowModal(false);
   };
 
+  const sortingnote = (e) => {
+    const option = e.target.value;
+    setSortOption(option);
+
+    // console.log(linkedNotesContents);
+
+    let flattenedNotes = linkedNotesContents.flat();
+    let sortedNotes = [...flattenedNotes];
+
+    if (option === "newest") {
+      sortedNotes.sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+    } else if (option === "oldest") {
+      sortedNotes.sort(
+        (a, b) => new Date(a.created_at) - new Date(b.created_at)
+      );
+    } else if (option === "a-z") {
+      sortedNotes.sort((a, b) => a.title.localeCompare(b.title));
+    }
+
+    let sortedLinkedNotes = [];
+    sortedNotes.forEach((note) => {
+      sortedLinkedNotes.push([note]);
+    });
+    setLinkedNotesContents(sortedLinkedNotes);
+    // console.log(sortedLinkedNotes);
+  };
+
   return (
     <div>
       <Navbar />
@@ -267,7 +297,15 @@ export default function NotePage() {
 
       {linkedNotesContents.length > 0 && (
         <div className="subsubcategory-page-container">
-          <h3>Related Notes</h3>
+          <div className="related-note-header">
+            <h3 className="related-notes-title">Related Notes</h3>
+            <select className="sort-selection" onClick={sortingnote}>
+              <option value="oldest">Oldest</option>
+              <option value="newest">Newest</option>
+              <option value="a-z">A-Z</option>
+            </select>
+          </div>
+
           {linkedNotesContents.map((linkedNote) =>
             linkedNote.map((note) => (
               <Note
